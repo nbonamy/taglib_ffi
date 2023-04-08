@@ -1,0 +1,7 @@
+{
+  "files.associations": {
+    "taglib_ffi.h": "c",
+    "cstring": "c",
+    "*.tcc": "cpp"
+  }
+}
