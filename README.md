@@ -9,6 +9,7 @@ A dart wrapper of TagLib.
 ### MacOS
 
 ```
+brew install cmake
 brew install taglib
 ```
 
