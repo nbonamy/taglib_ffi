@@ -8,7 +8,7 @@ A dart wrapper of TagLib.
 
 ### MacOS
 
-```
+```shell
 brew install cmake
 brew install taglib
 ```
@@ -19,7 +19,7 @@ Add as a `pubspec.yaml` dependency.
 
 To read tags:
 
-```
+```dart
 TagLib tagLib = TagLib();
 Tags tags = tagLib.getAudioTags(filename);
 if (tags.valid) {
@@ -29,7 +29,7 @@ if (tags.valid) {
 
 ## Tests
 
-```
+```shell
 cd src
 cmake .
 make
