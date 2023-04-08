@@ -13,6 +13,16 @@ brew install cmake
 brew install taglib
 ```
 
+## Setup
+
+### MacOS
+
+`HOMEBREW_PREFIX` variable needs to be defined:
+
+```shell
+export HOMEBREW_PREFIX="$(brew --prefix)" 
+```
+
 ## Usage
 
 Add as a `pubspec.yaml` dependency.
