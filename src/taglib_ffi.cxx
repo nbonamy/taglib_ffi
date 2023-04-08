@@ -153,10 +153,10 @@ void get_audio_info_from_tags(TagLib::ID3v2::Tag *id3v2tag, TagLib::Ogg::XiphCom
 
 }
 
-void get_audio_tags_mp3(const char *filename, struct Tags &tags) {
+void get_audio_tags_mpeg(const char *filename, struct Tags &tags) {
 
   // log
-  std::cout << "reading mp3 tags\n" ;
+  std::cout << "opening mpeg file\n" ;
 
   // open the file
   TagLib::FileStream fileStream(filename, true);
@@ -178,7 +178,7 @@ void get_audio_tags_mp3(const char *filename, struct Tags &tags) {
 void get_audio_tags_flac(const char *filename, struct Tags &tags) {
 
   // log
-  std::cout << "reading flac tags\n" ;
+  std::cout << "opening flac file\n" ;
 
   // open the file
   TagLib::FileStream fileStream(filename, true);
@@ -219,7 +219,7 @@ int get_mp4_tag_int(TagLib::MP4::Tag *mp4tag, const char *key) {
 void get_audio_tags_mp4(const char *filename, struct Tags &tags) {
 
   // log
-  std::cout << "reading mp4 tags\n" ;
+  std::cout << "opening mp4 file\n" ;
 
   // open file
   TagLib::FileStream fileStream(filename, true);
@@ -235,6 +235,9 @@ void get_audio_tags_mp4(const char *filename, struct Tags &tags) {
     std::cout << "no mp4 tags found\n";
     return;
   }
+
+  // log
+  std::cout << "parsing mp4 tags\n";
 
   // basic stuff
   fetch_audio_properties(f.audioProperties(), tags);
@@ -253,7 +256,7 @@ void get_audio_tags_mp4(const char *filename, struct Tags &tags) {
 void get_audio_tags_default(const char *filename, struct Tags &tags) {
   
   // log
-  std::cout << "reading default tags\n" ;
+  std::cout << "opening generic file\n" ;
 
   // open file
   TagLib::File *f = TagLib::FileRef::create(filename);
@@ -268,6 +271,9 @@ void get_audio_tags_default(const char *filename, struct Tags &tags) {
     std::cout << "no tags found\n";
     return;
   }
+
+  // log
+  std::cout << "parsing generic tags\n";
 
   // basic stuff
   fetch_audio_properties(f->audioProperties(), tags);
@@ -287,7 +293,7 @@ FFI_PLUGIN_EXPORT struct Tags get_audio_tags(const char *filename) {
   // based on extension
   std::string ext = strrchr(filename, '.');
   if (ext == ".mp3") {
-    get_audio_tags_mp3(filename, tags);
+    get_audio_tags_mpeg(filename, tags);
   } else if (ext == ".flac") {
     get_audio_tags_flac(filename, tags);
   } else if (ext == ".m4a") {
