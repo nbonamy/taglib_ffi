@@ -18,8 +18,8 @@ Pod::Spec.new do |s|
   s.source           = { :path => '.' }
   s.source_files     = 'Classes/**/*'
   s.xcconfig = {
-    'USER_HEADER_SEARCH_PATHS' => '/usr/local/include',
-    'LIBRARY_SEARCH_PATHS' => '/usr/local/lib'
+    'USER_HEADER_SEARCH_PATHS' => "#{ENV['HOMEBREW_PREFIX']}/include",
+    'LIBRARY_SEARCH_PATHS' => "#{ENV['HOMEBREW_PREFIX']}/lib"
   }
   s.libraries = 'tag'
   s.dependency 'FlutterMacOS'

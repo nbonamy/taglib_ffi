@@ -15,12 +15,10 @@ set_target_properties(taglib_ffi PROPERTIES
   LINKER_LANGUAGE CXX
 )
 
-execute_process(COMMAND brew --prefix OUTPUT_VARIABLE PREFIX OUTPUT_STRIP_TRAILING_WHITESPACE)
-
 target_compile_definitions(taglib_ffi PUBLIC DART_SHARED_LIB)
 
 target_include_directories(taglib_ffi PUBLIC
-  "${PREFIX}/include"
+  "$ENV{HOMEBREW_PREFIX}/include"
 )
 
-target_link_libraries(taglib_ffi PRIVATE "${PREFIX}/lib/libtag.dylib")
+target_link_libraries(taglib_ffi PRIVATE "$ENV{HOMEBREW_PREFIX}/lib/libtag.dylib")
