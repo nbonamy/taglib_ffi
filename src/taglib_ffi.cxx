@@ -19,12 +19,21 @@
 
 #define SAFE_FREE(x) if (x != NULL) free(x)
 
-char* copy_str(const TagLib::String& str) {
-  size_t len = str.length()+1;
-  char* buffer = (char*) malloc(len);
-  memset(buffer, 0, len);
-  strcpy(buffer, str.to8Bit(true).c_str());
-  return buffer;  
+char* copy_taglib_str(const TagLib::String& str) {
+  size_t length = str.length();
+  char* buffer = (char*) malloc(length+1);
+  strncpy(buffer, str.to8Bit(true).c_str(), length);
+  buffer[length] = '\0';
+  return buffer;
+}
+
+char* copy_string(const char *src) {
+  if (src == NULL) return copy_string("");
+  size_t length = strlen(src);
+  char* dest = (char*) malloc(length+1);
+  strncpy(dest, src, length);
+  dest[length] = '\0';
+  return dest;
 }
 
 TagLib::String get_tag_value(TagLib::ID3v2::Tag* tag, const char *tag_name) {
@@ -66,11 +75,11 @@ void fetch_audio_properties(TagLib::AudioProperties *properties, struct Tags &ta
 }
 
 void fetch_basic_info(TagLib::Tag *libtags, struct Tags &tags) {
-  tags.title = copy_str(libtags->title());
-  tags.artist = copy_str(libtags->artist());
-  tags.album = copy_str(libtags->album());
-  tags.performer = copy_str(libtags->artist());
-  tags.genre = copy_str(libtags->genre());
+  tags.title = copy_taglib_str(libtags->title());
+  tags.artist = copy_taglib_str(libtags->artist());
+  tags.album = copy_taglib_str(libtags->album());
+  tags.performer = copy_taglib_str(libtags->artist());
+  tags.genre = copy_taglib_str(libtags->genre());
   tags.year = libtags->year();
   tags.track_index = libtags->track();
 }
@@ -96,11 +105,11 @@ void get_audio_info_from_tags(TagLib::ID3v2::Tag* id3v2tag, TagLib::Ogg::XiphCom
     // get info
     // artist = TPE2 = Album Artist in iTunes
     // performer = TPE1 = Artist in iTunes
-    tags.title = copy_str(get_tag_value(id3v2tag, ID3TID_TITLE));
-    tags.artist = copy_str(get_tag_value(id3v2tag, ID3TID_BAND));
-    tags.performer = copy_str(get_tag_value(id3v2tag, ID3TID_LEADARTIST));
-    tags.album = copy_str(get_tag_value(id3v2tag, ID3TID_ALBUM));
-    tags.genre = copy_str(get_tag_value(id3v2tag, ID3TID_CONTENTTYPE));
+    tags.title = copy_taglib_str(get_tag_value(id3v2tag, ID3TID_TITLE));
+    tags.artist = copy_taglib_str(get_tag_value(id3v2tag, ID3TID_BAND));
+    tags.performer = copy_taglib_str(get_tag_value(id3v2tag, ID3TID_LEADARTIST));
+    tags.album = copy_taglib_str(get_tag_value(id3v2tag, ID3TID_ALBUM));
+    tags.genre = copy_taglib_str(get_tag_value(id3v2tag, ID3TID_CONTENTTYPE));
     tags.year = get_tag_value(id3v2tag, ID3TID_RECORDINGTIME).toInt();
     tags.volume_index = get_tag_value(id3v2tag, ID3TID_PARTINSET).toInt();
     tags.track_index = get_tag_value(id3v2tag, ID3TID_TRACKNUM).toInt();
@@ -130,8 +139,8 @@ void get_audio_info_from_tags(TagLib::ID3v2::Tag* id3v2tag, TagLib::Ogg::XiphCom
     fetch_basic_info(xiphComments, tags);
 
     // additional info
-    tags.artist = copy_str(get_xiph_comment(xiphComments, "ALBUMARTIST"));
-    tags.performer = copy_str(get_xiph_comment(xiphComments, "ARTIST"));
+    tags.artist = copy_taglib_str(get_xiph_comment(xiphComments, "ALBUMARTIST"));
+    tags.performer = copy_taglib_str(get_xiph_comment(xiphComments, "ARTIST"));
     tags.compilation = get_xiph_comment(xiphComments, "COMPILATION").toInt() == 1;
     tags.volume_index = get_xiph_comment(xiphComments, "DISCNUMBER").toInt();
 
@@ -234,8 +243,8 @@ void get_audio_tags_mp4(const char* filename, struct Tags &tags) {
   fetch_basic_info(mp4tag, tags);
 
   // additional info
-  tags.artist = copy_str(get_mp4_tag_string(mp4tag, "aART"));
-  tags.performer = copy_str(get_mp4_tag_string(mp4tag, "\251ART"));
+  tags.artist = copy_taglib_str(get_mp4_tag_string(mp4tag, "aART"));
+  tags.performer = copy_taglib_str(get_mp4_tag_string(mp4tag, "\251ART"));
   tags.compilation = get_mp4_tag_int(mp4tag, "cpil") == 1;
   tags.volume_index = get_mp4_tag_int(mp4tag, "disk");
 
@@ -294,8 +303,12 @@ FFI_PLUGIN_EXPORT struct Tags get_audio_tags(const char* filename) {
 
   // artist/performer
   if (tags.valid) {
-    if (tags.artist == NULL) tags.artist = tags.performer;
-    if (tags.performer == NULL) tags.performer = tags.artist;
+    if (tags.artist == NULL || strlen(tags.artist) == 0) {
+      tags.artist = copy_string(tags.performer);
+    }
+    if (tags.performer == NULL || strlen(tags.performer) == 0) {
+      tags.performer = copy_string(tags.artist);
+    }
   }
 
   // log
@@ -315,4 +328,3 @@ FFI_PLUGIN_EXPORT void free_audio_tags(struct Tags tags) {
   SAFE_FREE(tags.performer);
   SAFE_FREE(tags.genre);
 }
-
