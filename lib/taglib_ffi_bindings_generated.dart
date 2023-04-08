@@ -94,6 +94,8 @@ class Tags extends ffi.Struct {
 
   external ffi.Pointer<ffi.Char> genre;
 
+  external ffi.Pointer<ffi.Char> comments;
+
   @ffi.UnsignedInt()
   external int year;
 
@@ -123,7 +125,7 @@ class Tags extends ffi.Struct {
 }
 
 class Artwork extends ffi.Struct {
-  external ffi.Pointer<ffi.Char> buffer;
+  external ffi.Pointer<ffi.UnsignedChar> buffer;
 
   @ffi.Size()
   external int size;

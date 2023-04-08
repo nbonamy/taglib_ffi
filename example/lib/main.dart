@@ -71,6 +71,7 @@ class _MyAppState extends State<MyApp> {
                       Text(_tags!.artist),
                       Text(_tags!.performer),
                       Text(_tags!.genre),
+                      Text(_tags!.comments),
                       Text(_tags!.year.toString()),
                       Text(_tags!.compilation.toString()),
                       Text(_tags!.volumeIndex.toString()),

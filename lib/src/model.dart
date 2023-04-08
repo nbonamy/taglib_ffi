@@ -13,6 +13,7 @@ class Tags {
   String album;
   String performer;
   String genre;
+  String comments;
   int year;
   bool compilation;
   int volumeIndex;
@@ -30,6 +31,7 @@ class Tags {
     this.album = '',
     this.performer = '',
     this.genre = '',
+    this.comments = '',
     this.year = 0,
     this.compilation = false,
     this.volumeIndex = 0,
@@ -53,6 +55,7 @@ class Tags {
       album: _fromNativeString(tags.album),
       performer: _fromNativeString(tags.performer),
       genre: _fromNativeString(tags.genre),
+      comments: _fromNativeString(tags.comments),
       year: tags.year,
       compilation: tags.compilation == 1,
       volumeIndex: tags.volume_index,

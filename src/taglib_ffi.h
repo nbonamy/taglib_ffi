@@ -34,6 +34,7 @@ extern "C" {
     char* album;
     char* performer;
     char* genre;
+    char* comments;
     unsigned int year;
     bool compilation;
     int volume_index;

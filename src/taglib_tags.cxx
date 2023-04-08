@@ -108,6 +108,7 @@ void get_audio_info_from_tags(TagLib::ID3v2::Tag *id3v2tag, TagLib::Ogg::XiphCom
     tags.performer = copy_taglib_str(get_tag_value(id3v2tag, ID3TID_LEADARTIST));
     tags.album = copy_taglib_str(get_tag_value(id3v2tag, ID3TID_ALBUM));
     tags.genre = copy_taglib_str(get_tag_value(id3v2tag, ID3TID_CONTENTTYPE));
+    tags.comments = copy_taglib_str(get_tag_value(id3v2tag, ID3TID_COMMENT));
     tags.year = get_tag_value(id3v2tag, ID3TID_RECORDINGTIME).toInt();
     tags.volume_index = get_tag_value(id3v2tag, ID3TID_PARTINSET).toInt();
     tags.track_index = get_tag_value(id3v2tag, ID3TID_TRACKNUM).toInt();
@@ -137,6 +138,7 @@ void get_audio_info_from_tags(TagLib::ID3v2::Tag *id3v2tag, TagLib::Ogg::XiphCom
     // additional info
     tags.artist = copy_taglib_str(get_xiph_comment(xiphComments, "ALBUMARTIST"));
     tags.performer = copy_taglib_str(get_xiph_comment(xiphComments, "ARTIST"));
+    tags.comments = copy_taglib_str(get_xiph_comment(xiphComments, "COMMENT"));
     tags.compilation = get_xiph_comment(xiphComments, "COMPILATION").toInt() == 1;
     tags.volume_index = get_xiph_comment(xiphComments, "DISCNUMBER").toInt();
 
@@ -244,6 +246,7 @@ void get_audio_tags_mp4(const char *filename, struct Tags &tags) {
   // additional info
   tags.artist = copy_taglib_str(get_mp4_tag_string(mp4tag, "aART"));
   tags.performer = copy_taglib_str(get_mp4_tag_string(mp4tag, "\251ART"));
+  tags.comments = copy_taglib_str(get_mp4_tag_string(mp4tag, "\251cmt"));
   tags.compilation = get_mp4_tag_int(mp4tag, "cpil") == 1;
   tags.volume_index = get_mp4_tag_int(mp4tag, "disk");
 
