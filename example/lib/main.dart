@@ -1,3 +1,4 @@
+import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:taglib_ffi/taglib_ffi.dart';
@@ -16,6 +17,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final TagLib _tagLib = TagLib();
   String? _filename;
+  Uint8List? _artwork;
   Tags? _tags;
   @override
   void initState() {
@@ -45,6 +47,7 @@ class _MyAppState extends State<MyApp> {
                         setState(() {
                           _filename = result.files.single.path;
                           _tags = _tagLib.getAudioTags(_filename!);
+                          _artwork = _tagLib.getArtworkBytes(_filename!);
                         });
                       }
                     }),
@@ -55,6 +58,10 @@ class _MyAppState extends State<MyApp> {
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 16),
+                  if (_artwork != null) ...[
+                    Image.memory(_artwork!),
+                    const SizedBox(height: 16),
+                  ],
                   if (_tags != null) ...[
                     if (!_tags!.valid)
                       const Text('No tags')

@@ -37,6 +37,14 @@ if (tags.valid) {
 }
 ```
 
+To display artwork:
+
+```dart
+TagLib tagLib = TagLib();
+Uint8List? artwork = tagLib.getArtworkBytes(filename);
+-> Image.memory(_artwork!)
+```
+
 ## Tests
 
 ```shell
@@ -46,4 +54,3 @@ make
 cd ../test
 dart main.dart
 ```
-

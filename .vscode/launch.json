@@ -5,21 +5,11 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "taglib_ffi",
+      "name": "tests",
+      "cwd": "test",
       "request": "launch",
+      "program": "main.dart",
       "type": "dart"
-    },
-    {
-      "name": "taglib_ffi (profile mode)",
-      "request": "launch",
-      "type": "dart",
-      "flutterMode": "profile"
-    },
-    {
-      "name": "taglib_ffi (release mode)",
-      "request": "launch",
-      "type": "dart",
-      "flutterMode": "release"
     },
     {
       "name": "example",

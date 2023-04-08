@@ -1,3 +1,5 @@
+#pragma once
+
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -18,6 +20,8 @@
 #ifndef __cplusplus
 #define bool int
 #endif
+
+#define SAFE_FREE(x) if (x != NULL) free(x)
 
 #ifdef __cplusplus
 extern "C" {
@@ -41,9 +45,16 @@ extern "C" {
     int bitrate;
   };
 
-  FFI_PLUGIN_EXPORT void free_audio_tags(struct Tags tags);
+  struct Artwork {
+    unsigned char* buffer;
+    size_t size;
+  };
 
-  FFI_PLUGIN_EXPORT struct Tags get_audio_tags(const char* filename);
+  FFI_PLUGIN_EXPORT struct Tags get_audio_tags(const char*);
+  FFI_PLUGIN_EXPORT void free_audio_tags(struct Tags);
+
+  FFI_PLUGIN_EXPORT struct Artwork get_artwork(const char*);
+  FFI_PLUGIN_EXPORT void free_artwork(struct Artwork);
 
 #ifdef __cplusplus
 }

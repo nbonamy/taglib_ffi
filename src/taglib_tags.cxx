@@ -17,8 +17,6 @@
 
 #include "id3_tags.h"
 
-#define SAFE_FREE(x) if (x != NULL) free(x)
-
 char* copy_taglib_str(const TagLib::String &str) {
   size_t length = str.length();
   char* buffer = (char*) malloc(length+1);

@@ -8,7 +8,6 @@
 import 'dart:ffi' as ffi;
 
 /// Bindings for `src/taglib_ffi.h`.
-///
 /// Regenerate bindings with `flutter pub run ffigen --config ffigen.yaml`.
 ///
 class TaglibFfiBindings {
@@ -26,24 +25,11 @@ class TaglibFfiBindings {
           lookup)
       : _lookup = lookup;
 
-  void free_audio_tags(
-    Tags tags,
-  ) {
-    return _free_audio_tags(
-      tags,
-    );
-  }
-
-  late final _free_audio_tagsPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(Tags)>>('free_audio_tags');
-  late final _free_audio_tags =
-      _free_audio_tagsPtr.asFunction<void Function(Tags)>();
-
   Tags get_audio_tags(
-    ffi.Pointer<ffi.Char> filename,
+    ffi.Pointer<ffi.Char> arg0,
   ) {
     return _get_audio_tags(
-      filename,
+      arg0,
     );
   }
 
@@ -52,6 +38,46 @@ class TaglibFfiBindings {
           'get_audio_tags');
   late final _get_audio_tags =
       _get_audio_tagsPtr.asFunction<Tags Function(ffi.Pointer<ffi.Char>)>();
+
+  void free_audio_tags(
+    Tags arg0,
+  ) {
+    return _free_audio_tags(
+      arg0,
+    );
+  }
+
+  late final _free_audio_tagsPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(Tags)>>('free_audio_tags');
+  late final _free_audio_tags =
+      _free_audio_tagsPtr.asFunction<void Function(Tags)>();
+
+  Artwork get_artwork(
+    ffi.Pointer<ffi.Char> arg0,
+  ) {
+    return _get_artwork(
+      arg0,
+    );
+  }
+
+  late final _get_artworkPtr =
+      _lookup<ffi.NativeFunction<Artwork Function(ffi.Pointer<ffi.Char>)>>(
+          'get_artwork');
+  late final _get_artwork =
+      _get_artworkPtr.asFunction<Artwork Function(ffi.Pointer<ffi.Char>)>();
+
+  void free_artwork(
+    Artwork arg0,
+  ) {
+    return _free_artwork(
+      arg0,
+    );
+  }
+
+  late final _free_artworkPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(Artwork)>>('free_artwork');
+  late final _free_artwork =
+      _free_artworkPtr.asFunction<void Function(Artwork)>();
 }
 
 class Tags extends ffi.Struct {
@@ -94,4 +120,11 @@ class Tags extends ffi.Struct {
 
   @ffi.Int()
   external int bitrate;
+}
+
+class Artwork extends ffi.Struct {
+  external ffi.Pointer<ffi.Char> buffer;
+
+  @ffi.Size()
+  external int size;
 }
