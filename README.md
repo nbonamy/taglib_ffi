@@ -25,3 +25,14 @@ if (tags.valid) {
   ...
 }
 ```
+
+## Tests
+
+```
+cd src
+cmake .
+make
+cd ../test
+dart main.dart
+```
+
