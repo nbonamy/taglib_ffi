@@ -19,7 +19,7 @@
 
 #define SAFE_FREE(x) if (x != NULL) free(x)
 
-char* copy_taglib_str(const TagLib::String& str) {
+char* copy_taglib_str(const TagLib::String &str) {
   size_t length = str.length();
   char* buffer = (char*) malloc(length+1);
   strncpy(buffer, str.to8Bit(true).c_str(), length);
@@ -36,7 +36,7 @@ char* copy_string(const char *src) {
   return dest;
 }
 
-TagLib::String get_tag_value(TagLib::ID3v2::Tag* tag, const char *tag_name) {
+TagLib::String get_tag_value(TagLib::ID3v2::Tag *tag, const char *tag_name) {
   if (tag == NULL) return "";
   TagLib::ID3v2::FrameList l = tag->frameList(tag_name);
   if (!l.isEmpty()) {
@@ -84,8 +84,8 @@ void fetch_basic_info(TagLib::Tag *libtags, struct Tags &tags) {
   tags.track_index = libtags->track();
 }
 
-TagLib::String get_xiph_comment(TagLib::Ogg::XiphComment* xiphComments, const char* key) {
-  const TagLib::Ogg::FieldListMap& fieldListMap = xiphComments->fieldListMap();
+TagLib::String get_xiph_comment(TagLib::Ogg::XiphComment *xiphComments, const char *key) {
+  const TagLib::Ogg::FieldListMap &fieldListMap = xiphComments->fieldListMap();
   TagLib::Ogg::FieldListMap::ConstIterator it = fieldListMap.find(key);
   if (it != fieldListMap.end()) {
     TagLib::StringList stringList = it->second;
@@ -95,7 +95,7 @@ TagLib::String get_xiph_comment(TagLib::Ogg::XiphComment* xiphComments, const ch
   }
 }
 
-void get_audio_info_from_tags(TagLib::ID3v2::Tag* id3v2tag, TagLib::Ogg::XiphComment* xiphComments, struct Tags &tags) {
+void get_audio_info_from_tags(TagLib::ID3v2::Tag *id3v2tag, TagLib::Ogg::XiphComment *xiphComments, struct Tags &tags) {
 
   if (id3v2tag && id3v2tag->isEmpty() == false) {
 
@@ -155,7 +155,7 @@ void get_audio_info_from_tags(TagLib::ID3v2::Tag* id3v2tag, TagLib::Ogg::XiphCom
 
 }
 
-void get_audio_tags_mp3(const char* filename, struct Tags &tags) {
+void get_audio_tags_mp3(const char *filename, struct Tags &tags) {
 
   // log
   std::cout << "reading mp3 tags\n" ;
@@ -177,7 +177,7 @@ void get_audio_tags_mp3(const char* filename, struct Tags &tags) {
 
 }
 
-void get_audio_tags_flac(const char* filename, struct Tags &tags) {
+void get_audio_tags_flac(const char *filename, struct Tags &tags) {
 
   // log
   std::cout << "reading flac tags\n" ;
@@ -200,7 +200,7 @@ void get_audio_tags_flac(const char* filename, struct Tags &tags) {
 
 }
 
-TagLib::String get_mp4_tag_string(TagLib::MP4::Tag* mp4tag, const char* key) {
+TagLib::String get_mp4_tag_string(TagLib::MP4::Tag *mp4tag, const char *key) {
   if (mp4tag->contains(key)) {
     TagLib::MP4::Item item = mp4tag->item(key);
     return item.toStringList().toString();
@@ -209,7 +209,7 @@ TagLib::String get_mp4_tag_string(TagLib::MP4::Tag* mp4tag, const char* key) {
   }
 }
 
-int get_mp4_tag_int(TagLib::MP4::Tag* mp4tag, const char* key) {
+int get_mp4_tag_int(TagLib::MP4::Tag *mp4tag, const char *key) {
   if (mp4tag->contains(key)) {
     TagLib::MP4::Item item = mp4tag->item(key);
     return item.toInt();
@@ -218,7 +218,7 @@ int get_mp4_tag_int(TagLib::MP4::Tag* mp4tag, const char* key) {
   }
 }
 
-void get_audio_tags_mp4(const char* filename, struct Tags &tags) {
+void get_audio_tags_mp4(const char *filename, struct Tags &tags) {
 
   // log
   std::cout << "reading mp4 tags\n" ;
@@ -232,7 +232,7 @@ void get_audio_tags_mp4(const char* filename, struct Tags &tags) {
   }
 
   // tags
-  TagLib::MP4::Tag* mp4tag = f.tag();  
+  TagLib::MP4::Tag *mp4tag = f.tag();  
   if (mp4tag == NULL || mp4tag->isEmpty()) {
     std::cout << "no mp4 tags found\n";
     return;
@@ -252,7 +252,7 @@ void get_audio_tags_mp4(const char* filename, struct Tags &tags) {
   tags.valid = true;
 }
 
-void get_audio_tags_default(const char* filename, struct Tags &tags) {
+void get_audio_tags_default(const char *filename, struct Tags &tags) {
   
   // log
   std::cout << "reading default tags\n" ;
@@ -280,7 +280,7 @@ void get_audio_tags_default(const char* filename, struct Tags &tags) {
 
 }
 
-FFI_PLUGIN_EXPORT struct Tags get_audio_tags(const char* filename) {
+FFI_PLUGIN_EXPORT struct Tags get_audio_tags(const char *filename) {
 
   // init
   struct Tags tags;
