@@ -120,11 +120,9 @@ void get_audio_info_from_tags(TagLib::ID3v2::Tag *id3v2tag, TagLib::Ogg::XiphCom
     }
 
     // compilation
-    std::string tcmp = get_tag_value(id3v2tag, "TCMP").toCString();
-    tags.compilation = (tcmp.empty() == false && tcmp != "0");
+    tags.compilation = get_tag_value(id3v2tag, "TCMP").toInt() == 1;
     if (tags.compilation == false) {
-      std::string tcp = get_tag_value(id3v2tag, "TCP").toCString();
-      tags.compilation = (tcp.empty() == false && tcmp != "0");
+      tags.compilation = get_tag_value(id3v2tag, "TCP").toInt() == 1;
     }
 
     // done
