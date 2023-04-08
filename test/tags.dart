@@ -11,8 +11,10 @@ void testTags() {
     expect(tags.album, 'Album');
     expect(tags.artist, 'Artist');
     expect(tags.performer, 'Performer');
+    expect(tags.composer, 'Composer');
     expect(tags.genre, 'Acid');
-    expect(tags.comments, 'Comment');
+    expect(tags.copyright, '2023 Copyright');
+    expect(tags.comment, 'Comment');
     expect(tags.year, 1900);
     expect(tags.compilation, true);
     expect(tags.volumeIndex, 1);
@@ -32,8 +34,10 @@ void testTags() {
     expect(tags.album, 'Album');
     expect(tags.artist, 'Artist');
     expect(tags.performer, 'Performer');
+    expect(tags.composer, 'Composer');
     expect(tags.genre, 'Acid');
-    expect(tags.comments, 'Comment');
+    expect(tags.copyright, '2023 Copyright');
+    expect(tags.comment, 'Comment');
     expect(tags.year, 1900);
     expect(tags.compilation, true);
     expect(tags.volumeIndex, 1);
@@ -53,8 +57,10 @@ void testTags() {
     expect(tags.album, 'Album');
     expect(tags.artist, 'Artist');
     expect(tags.performer, 'Performer');
+    expect(tags.composer, 'Composer');
     expect(tags.genre, 'Acid');
-    expect(tags.comments, 'Comment');
+    expect(tags.copyright, '2023 Copyright');
+    expect(tags.comment, 'Comment');
     expect(tags.year, 1900);
     expect(tags.compilation, true);
     expect(tags.volumeIndex, 1);

@@ -30,11 +30,13 @@ extern "C" {
   struct Tags {
     bool valid;
     char* title;
-    char* artist;
     char* album;
+    char* artist;
     char* performer;
+    char* composer;
     char* genre;
-    char* comments;
+    char* copyright;
+    char* comment;
     unsigned int year;
     bool compilation;
     int volume_index;

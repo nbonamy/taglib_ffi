@@ -78,6 +78,7 @@ void fetch_basic_info(TagLib::Tag *libtags, struct Tags &tags) {
   tags.album = copy_taglib_str(libtags->album());
   tags.performer = copy_taglib_str(libtags->artist());
   tags.genre = copy_taglib_str(libtags->genre());
+  tags.comment = copy_taglib_str(libtags->comment());
   tags.year = libtags->year();
   tags.track_index = libtags->track();
 }
@@ -104,11 +105,13 @@ void get_audio_info_from_tags(TagLib::ID3v2::Tag *id3v2tag, TagLib::Ogg::XiphCom
     // artist = TPE2 = Album Artist in iTunes
     // performer = TPE1 = Artist in iTunes
     tags.title = copy_taglib_str(get_tag_value(id3v2tag, ID3TID_TITLE));
+    tags.album = copy_taglib_str(get_tag_value(id3v2tag, ID3TID_ALBUM));
     tags.artist = copy_taglib_str(get_tag_value(id3v2tag, ID3TID_BAND));
     tags.performer = copy_taglib_str(get_tag_value(id3v2tag, ID3TID_LEADARTIST));
-    tags.album = copy_taglib_str(get_tag_value(id3v2tag, ID3TID_ALBUM));
+    tags.composer = copy_taglib_str(get_tag_value(id3v2tag, ID3TID_COMPOSER));
     tags.genre = copy_taglib_str(get_tag_value(id3v2tag, ID3TID_CONTENTTYPE));
-    tags.comments = copy_taglib_str(get_tag_value(id3v2tag, ID3TID_COMMENT));
+    tags.copyright = copy_taglib_str(get_tag_value(id3v2tag, ID3TID_COPYRIGHT));
+    tags.comment = copy_taglib_str(get_tag_value(id3v2tag, ID3TID_COMMENT));
     tags.year = get_tag_value(id3v2tag, ID3TID_RECORDINGTIME).toInt();
     tags.volume_index = get_tag_value(id3v2tag, ID3TID_PARTINSET).toInt();
     tags.track_index = get_tag_value(id3v2tag, ID3TID_TRACKNUM).toInt();
@@ -138,7 +141,9 @@ void get_audio_info_from_tags(TagLib::ID3v2::Tag *id3v2tag, TagLib::Ogg::XiphCom
     // additional info
     tags.artist = copy_taglib_str(get_xiph_comment(xiphComments, "ALBUMARTIST"));
     tags.performer = copy_taglib_str(get_xiph_comment(xiphComments, "ARTIST"));
-    tags.comments = copy_taglib_str(get_xiph_comment(xiphComments, "COMMENT"));
+    tags.composer = copy_taglib_str(get_xiph_comment(xiphComments, "COMPOSER"));
+    tags.copyright = copy_taglib_str(get_xiph_comment(xiphComments, "COPYRIGHT"));
+    tags.comment = copy_taglib_str(get_xiph_comment(xiphComments, "COMMENT"));
     tags.compilation = get_xiph_comment(xiphComments, "COMPILATION").toInt() == 1;
     tags.volume_index = get_xiph_comment(xiphComments, "DISCNUMBER").toInt();
 
@@ -246,7 +251,9 @@ void get_audio_tags_mp4(const char *filename, struct Tags &tags) {
   // additional info
   tags.artist = copy_taglib_str(get_mp4_tag_string(mp4tag, "aART"));
   tags.performer = copy_taglib_str(get_mp4_tag_string(mp4tag, "\251ART"));
-  tags.comments = copy_taglib_str(get_mp4_tag_string(mp4tag, "\251cmt"));
+  tags.composer = copy_taglib_str(get_mp4_tag_string(mp4tag, "\251wrt"));
+  tags.copyright = copy_taglib_str(get_mp4_tag_string(mp4tag, "cprt"));
+  tags.comment = copy_taglib_str(get_mp4_tag_string(mp4tag, "\251cmt"));
   tags.compilation = get_mp4_tag_int(mp4tag, "cpil") == 1;
   tags.volume_index = get_mp4_tag_int(mp4tag, "disk");
 

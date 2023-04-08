@@ -9,11 +9,13 @@ import '../taglib_ffi_bindings_generated.dart' as taglib;
 class Tags {
   bool valid;
   String title;
-  String artist;
   String album;
+  String artist;
   String performer;
+  String composer;
   String genre;
-  String comments;
+  String copyright;
+  String comment;
   int year;
   bool compilation;
   int volumeIndex;
@@ -27,11 +29,13 @@ class Tags {
   Tags({
     this.valid = false,
     this.title = '',
-    this.artist = '',
     this.album = '',
+    this.artist = '',
     this.performer = '',
+    this.composer = '',
     this.genre = '',
-    this.comments = '',
+    this.copyright = '',
+    this.comment = '',
     this.year = 0,
     this.compilation = false,
     this.volumeIndex = 0,
@@ -51,11 +55,13 @@ class Tags {
     return Tags(
       valid: true,
       title: _fromNativeString(tags.title),
-      artist: _fromNativeString(tags.artist),
       album: _fromNativeString(tags.album),
+      artist: _fromNativeString(tags.artist),
       performer: _fromNativeString(tags.performer),
+      composer: _fromNativeString(tags.composer),
       genre: _fromNativeString(tags.genre),
-      comments: _fromNativeString(tags.comments),
+      copyright: _fromNativeString(tags.copyright),
+      comment: _fromNativeString(tags.comment),
       year: tags.year,
       compilation: tags.compilation == 1,
       volumeIndex: tags.volume_index,

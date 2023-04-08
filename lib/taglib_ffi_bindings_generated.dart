@@ -86,15 +86,19 @@ class Tags extends ffi.Struct {
 
   external ffi.Pointer<ffi.Char> title;
 
-  external ffi.Pointer<ffi.Char> artist;
-
   external ffi.Pointer<ffi.Char> album;
+
+  external ffi.Pointer<ffi.Char> artist;
 
   external ffi.Pointer<ffi.Char> performer;
 
+  external ffi.Pointer<ffi.Char> composer;
+
   external ffi.Pointer<ffi.Char> genre;
 
-  external ffi.Pointer<ffi.Char> comments;
+  external ffi.Pointer<ffi.Char> copyright;
+
+  external ffi.Pointer<ffi.Char> comment;
 
   @ffi.UnsignedInt()
   external int year;
