@@ -30,7 +30,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  ffi: ^2.0.1
   taglib_ffi:
     # When depending on this package from a real application you should use:
     #   taglib_ffi: ^x.y.z
