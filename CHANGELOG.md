@@ -5,3 +5,4 @@
 ## 0.0.2
 
 * Fixed accents conversion
+* Fixed numerical genre

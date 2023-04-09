@@ -313,13 +313,37 @@ FFI_PLUGIN_EXPORT struct Tags get_audio_tags(const char *filename) {
     get_audio_tags_default(filename, tags);
   }
 
-  // artist/performer
+  // fix some stuff
   if (tags.valid) {
+
+    // artist/performer
     if (tags.artist == NULL || strlen(tags.artist) == 0) {
       tags.artist = copy_string(tags.performer);
     }
     if (tags.performer == NULL || strlen(tags.performer) == 0) {
       tags.performer = copy_string(tags.artist);
+    }
+
+    // year
+    if (tags.year > 0 && tags.year < 100) {
+      tags.year = 2000 + tags.year;
+    }
+
+    // genre
+    std::string genre_str_id = tags.genre;
+    if (genre_str_id.empty() == false) {
+      // remove parenthesis
+      genre_str_id.erase(0, genre_str_id.find_first_not_of(")"));
+      genre_str_id.erase(genre_str_id.find_last_not_of("(") + 1);
+      bool is_only_digits = std::all_of(genre_str_id.begin(), genre_str_id.end(), ::isdigit);
+      if (is_only_digits) {
+        TagLib::uint genre_id = atoi(genre_str_id.c_str());
+        TagLib::String taglib_genre = TagLib::ID3v1::genre(genre_id);
+        if (taglib_genre.isEmpty() == false) {
+          SAFE_FREE(tags.genre);
+          tags.genre = copy_taglib_str(taglib_genre);
+        }
+      }
     }
   }
 
