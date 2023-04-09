@@ -74,6 +74,24 @@ class Tags {
     );
   }
 
+  Pointer<taglib.Tags> toNativeTags() {
+    final Pointer<taglib.Tags> tags = calloc<taglib.Tags>();
+    tags.ref.valid = valid ? 1 : 0;
+    tags.ref.title = title.toNativeUtf8().cast<Char>();
+    tags.ref.album = album.toNativeUtf8().cast<Char>();
+    tags.ref.artist = artist.toNativeUtf8().cast<Char>();
+    tags.ref.performer = performer.toNativeUtf8().cast<Char>();
+    tags.ref.composer = composer.toNativeUtf8().cast<Char>();
+    tags.ref.genre = genre.toNativeUtf8().cast<Char>();
+    tags.ref.copyright = copyright.toNativeUtf8().cast<Char>();
+    tags.ref.comment = comment.toNativeUtf8().cast<Char>();
+    tags.ref.year = year;
+    tags.ref.compilation = compilation ? 1 : 0;
+    tags.ref.volume_index = volumeIndex;
+    tags.ref.track_index = trackIndex;
+    return tags;
+  }
+
   static String _fromNativeString(Pointer<Char> ptr) {
     return ptr == nullptr ? '' : ptr.cast<Utf8>().toDartString();
   }

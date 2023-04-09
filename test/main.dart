@@ -3,9 +3,11 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'artwork.dart';
-import 'tags.dart';
+import 'read_tags.dart';
+import 'write_tags.dart';
 
 void main() {
-  testTags();
+  testReadTags();
+  testWriteTags();
   testArtwork();
 }

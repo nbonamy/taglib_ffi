@@ -18,6 +18,8 @@
 
 #include "id3_tags.h"
 
+using namespace TagLib;
+
 char* copy_buffer(const char *src, size_t length) {
   if (src == NULL) return NULL;
   char* dest = (char*) malloc(length);
@@ -32,23 +34,23 @@ FFI_PLUGIN_EXPORT struct Artwork get_artwork(const char* filename) {
   memset(&artwork, 0, sizeof(artwork));
   
   // open a file stream so we can manage r/w access
-  TagLib::FileStream fileStream(filename, true);
+  FileStream fileStream(filename, true);
   if (fileStream.isOpen() == false) {
     std::cout << "unable to open file\n";
   }
 
   // mpeg?
   {
-    TagLib::MPEG::File mpegfile(&fileStream, TagLib::ID3v2::FrameFactory::instance());
+    MPEG::File mpegfile(&fileStream, ID3v2::FrameFactory::instance());
     if (mpegfile.ID3v2Tag()) {
 
       // log
       std::cout << "parsing id3v2 tags\n";
 
       // get picture
-      TagLib::ID3v2::FrameList fl = mpegfile.ID3v2Tag()->frameListMap()[ID3TID_PICTURE];
+      ID3v2::FrameList fl = mpegfile.ID3v2Tag()->frameListMap()[ID3TID_PICTURE];
       if (!fl.isEmpty()) {
-        TagLib::ID3v2::AttachedPictureFrame* p = static_cast<TagLib::ID3v2::AttachedPictureFrame*>(fl.front());
+        ID3v2::AttachedPictureFrame* p = static_cast<ID3v2::AttachedPictureFrame*>(fl.front());
         if (p != NULL) {
           artwork.buffer = (unsigned char*) copy_buffer(p->picture().data(), p->picture().size());
           artwork.size = p->picture().size();
@@ -60,9 +62,9 @@ FFI_PLUGIN_EXPORT struct Artwork get_artwork(const char* filename) {
 
   // mp4
   {
-    TagLib::MP4::File mp4file(&fileStream);
+    MP4::File mp4file(&fileStream);
     if (mp4file.isValid()) {
-      TagLib::MP4::Tag* mp4tag = mp4file.tag();
+      MP4::Tag* mp4tag = mp4file.tag();
       if (mp4tag != NULL) {
 
         // log
@@ -70,11 +72,11 @@ FFI_PLUGIN_EXPORT struct Artwork get_artwork(const char* filename) {
 
         // do it
         if (mp4tag->contains("covr")) {
-          TagLib::MP4::Item item = mp4tag->item("covr");
+          MP4::Item item = mp4tag->item("covr");
           if (item.isValid()) {
-            TagLib::MP4::CoverArtList artlist = item.toCoverArtList();
-            for (TagLib::MP4::CoverArtList::ConstIterator it = artlist.begin(); it != artlist.end(); ++it) {
-              const TagLib::MP4::CoverArt& coverart = *it;
+            MP4::CoverArtList artlist = item.toCoverArtList();
+            for (MP4::CoverArtList::ConstIterator it = artlist.begin(); it != artlist.end(); ++it) {
+              const MP4::CoverArt& coverart = *it;
               artwork.buffer = (unsigned char*) copy_buffer(coverart.data().data(), coverart.data().size());
               artwork.size = coverart.data().size();
               return artwork;
@@ -87,16 +89,16 @@ FFI_PLUGIN_EXPORT struct Artwork get_artwork(const char* filename) {
 
   // flac
   {
-    TagLib::FLAC::File flacfile(&fileStream, TagLib::ID3v2::FrameFactory::instance());
+    FLAC::File flacfile(&fileStream, ID3v2::FrameFactory::instance());
 
     // start with FLAC picture list then Vorbis picture list
-    TagLib::List<TagLib::FLAC::Picture*> pictureList = flacfile.pictureList();
+    List<FLAC::Picture*> pictureList = flacfile.pictureList();
     if (pictureList.isEmpty() && flacfile.xiphComment()) {
-      TagLib::List<TagLib::FLAC::Picture*> pictureList = flacfile.xiphComment()->pictureList();
+      List<FLAC::Picture*> pictureList = flacfile.xiphComment()->pictureList();
     }
-    TagLib::FLAC::Picture* picture = pictureList.front();
-    for (TagLib::List<TagLib::FLAC::Picture*>::Iterator it = pictureList.begin(); it != pictureList.end(); ++it) {
-      if ((*it)->type() == TagLib::FLAC::Picture::FrontCover) {
+    FLAC::Picture* picture = pictureList.front();
+    for (List<FLAC::Picture*>::Iterator it = pictureList.begin(); it != pictureList.end(); ++it) {
+      if ((*it)->type() == FLAC::Picture::FrontCover) {
         picture = *it;
       }
     }
@@ -108,9 +110,9 @@ FFI_PLUGIN_EXPORT struct Artwork get_artwork(const char* filename) {
 
     // then id3v2
     if (flacfile.ID3v2Tag()) {
-      TagLib::ID3v2::FrameList fl = flacfile.ID3v2Tag()->frameListMap()["APIC"];
+      ID3v2::FrameList fl = flacfile.ID3v2Tag()->frameListMap()["APIC"];
       if (!fl.isEmpty()) {
-        TagLib::ID3v2::AttachedPictureFrame* p = static_cast<TagLib::ID3v2::AttachedPictureFrame*>(fl.front());
+        ID3v2::AttachedPictureFrame* p = static_cast<ID3v2::AttachedPictureFrame*>(fl.front());
         if (p != NULL) {
           artwork.buffer = (unsigned char*) copy_buffer(p->picture().data(), p->picture().size());
           artwork.size = p->picture().size();

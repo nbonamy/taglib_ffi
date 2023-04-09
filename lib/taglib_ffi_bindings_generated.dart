@@ -39,6 +39,23 @@ class TaglibFfiBindings {
   late final _get_audio_tags =
       _get_audio_tagsPtr.asFunction<Tags Function(ffi.Pointer<ffi.Char>)>();
 
+  int set_audio_tags(
+    ffi.Pointer<ffi.Char> arg0,
+    ffi.Pointer<Tags> arg1,
+  ) {
+    return _set_audio_tags(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _set_audio_tagsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<ffi.Char>, ffi.Pointer<Tags>)>>('set_audio_tags');
+  late final _set_audio_tags = _set_audio_tagsPtr
+      .asFunction<int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<Tags>)>();
+
   void free_audio_tags(
     Tags arg0,
   ) {

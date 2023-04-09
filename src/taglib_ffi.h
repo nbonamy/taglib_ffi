@@ -54,6 +54,7 @@ extern "C" {
   };
 
   FFI_PLUGIN_EXPORT struct Tags get_audio_tags(const char*);
+  FFI_PLUGIN_EXPORT int set_audio_tags(const char*, struct Tags*);
   FFI_PLUGIN_EXPORT void free_audio_tags(struct Tags);
 
   FFI_PLUGIN_EXPORT struct Artwork get_artwork(const char*);

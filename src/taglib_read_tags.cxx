@@ -17,7 +17,9 @@
 
 #include "id3_tags.h"
 
-char* copy_taglib_str(const TagLib::String &str) {
+using namespace TagLib;
+
+char* copy_taglib_str(const String &str) {
   size_t length = strlen(str.to8Bit(true).c_str());
   char* buffer = (char*) malloc(length+1);
   memcpy(buffer, str.to8Bit(true).c_str(), length);
@@ -34,17 +36,17 @@ char* copy_string(const char *src) {
   return dest;
 }
 
-TagLib::String get_tag_value(TagLib::ID3v2::Tag *tag, const char *tag_name) {
+String get_tag_value(ID3v2::Tag *tag, const char *tag_name) {
   if (tag == NULL) return "";
-  TagLib::ID3v2::FrameList l = tag->frameList(tag_name);
+  ID3v2::FrameList l = tag->frameList(tag_name);
   if (!l.isEmpty()) {
-    TagLib::String value = l.front()->toString();
+    String value = l.front()->toString();
     return value;
   }
   return "";
 }
 
-void fetch_audio_properties(TagLib::AudioProperties *properties, struct Tags &tags) {
+void fetch_audio_properties(AudioProperties *properties, struct Tags &tags) {
 
   // check
   if (properties == NULL) {
@@ -59,20 +61,20 @@ void fetch_audio_properties(TagLib::AudioProperties *properties, struct Tags &ta
   tags.sample_rate = properties->sampleRate();
 
   // flac
-  TagLib::FLAC::Properties* flacProperties = dynamic_cast<TagLib::FLAC::Properties*>(properties);
+  FLAC::Properties* flacProperties = dynamic_cast<FLAC::Properties*>(properties);
   if (flacProperties != NULL) {
     tags.bits_per_sample = flacProperties->bitsPerSample();
   }
 
   // mp4
-  TagLib::MP4::Properties* mp4Properties = dynamic_cast<TagLib::MP4::Properties*>(properties);
+  MP4::Properties* mp4Properties = dynamic_cast<MP4::Properties*>(properties);
   if (mp4Properties != NULL) {
     tags.bits_per_sample = mp4Properties->bitsPerSample();
   }
 
 }
 
-void fetch_basic_info(TagLib::Tag *libtags, struct Tags &tags) {
+void fetch_basic_info(Tag *libtags, struct Tags &tags) {
   tags.title = copy_taglib_str(libtags->title());
   tags.artist = copy_taglib_str(libtags->artist());
   tags.album = copy_taglib_str(libtags->album());
@@ -83,18 +85,18 @@ void fetch_basic_info(TagLib::Tag *libtags, struct Tags &tags) {
   tags.track_index = libtags->track();
 }
 
-TagLib::String get_xiph_comment(TagLib::Ogg::XiphComment *xiphComments, const char *key) {
-  const TagLib::Ogg::FieldListMap &fieldListMap = xiphComments->fieldListMap();
-  TagLib::Ogg::FieldListMap::ConstIterator it = fieldListMap.find(key);
+String get_xiph_comment(Ogg::XiphComment *xiphComments, const char *key) {
+  const Ogg::FieldListMap &fieldListMap = xiphComments->fieldListMap();
+  Ogg::FieldListMap::ConstIterator it = fieldListMap.find(key);
   if (it != fieldListMap.end()) {
-    TagLib::StringList stringList = it->second;
+    StringList stringList = it->second;
     return stringList.toString();
   } else {
     return "";
   }
 }
 
-void get_audio_info_from_tags(TagLib::ID3v2::Tag *id3v2tag, TagLib::Ogg::XiphComment *xiphComments, struct Tags &tags) {
+void get_audio_info_from_tags(ID3v2::Tag *id3v2tag, Ogg::XiphComment *xiphComments, struct Tags &tags) {
 
   if (id3v2tag && id3v2tag->isEmpty() == false) {
 
@@ -164,15 +166,14 @@ void get_audio_tags_mpeg(const char *filename, struct Tags &tags) {
   std::cout << "opening mpeg file\n" ;
 
   // open the file
-  TagLib::FileStream fileStream(filename, true);
-  TagLib::MPEG::File f(&fileStream, TagLib::ID3v2::FrameFactory::instance());
+  MPEG::File f(filename);
   if (f.isValid() == false) {
     std::cout << "unable to open file\n";
     return;
   }
 
   // get id3v2
-  TagLib::ID3v2::Tag* id3v2tag = f.ID3v2Tag();
+  ID3v2::Tag* id3v2tag = f.ID3v2Tag();
 
   // do it
   fetch_audio_properties(f.audioProperties(), tags);
@@ -186,16 +187,15 @@ void get_audio_tags_flac(const char *filename, struct Tags &tags) {
   std::cout << "opening flac file\n" ;
 
   // open the file
-  TagLib::FileStream fileStream(filename, true);
-  TagLib::FLAC::File f(&fileStream, TagLib::ID3v2::FrameFactory::instance());
+  FLAC::File f(filename);
   if (f.isValid() == false) {
     std::cout << "unable to open file\n";
     return;
   }
 
   // get tags
-  TagLib::ID3v2::Tag* id3v2tag = f.ID3v2Tag();
-  TagLib::Ogg::XiphComment* xiphComments = f.xiphComment();
+  ID3v2::Tag* id3v2tag = f.ID3v2Tag();
+  Ogg::XiphComment* xiphComments = f.xiphComment();
 
   // do it
   fetch_audio_properties(f.audioProperties(), tags);
@@ -203,18 +203,18 @@ void get_audio_tags_flac(const char *filename, struct Tags &tags) {
 
 }
 
-TagLib::String get_mp4_tag_string(TagLib::MP4::Tag *mp4tag, const char *key) {
+String get_mp4_tag_string(MP4::Tag *mp4tag, const char *key) {
   if (mp4tag->contains(key)) {
-    TagLib::MP4::Item item = mp4tag->item(key);
+    MP4::Item item = mp4tag->item(key);
     return item.toStringList().toString();
   } else {
     return "";
   }
 }
 
-int get_mp4_tag_int(TagLib::MP4::Tag *mp4tag, const char *key) {
+int get_mp4_tag_int(MP4::Tag *mp4tag, const char *key) {
   if (mp4tag->contains(key)) {
-    TagLib::MP4::Item item = mp4tag->item(key);
+    MP4::Item item = mp4tag->item(key);
     return item.toInt();
   } else {
     return 0;
@@ -227,15 +227,14 @@ void get_audio_tags_mp4(const char *filename, struct Tags &tags) {
   std::cout << "opening mp4 file\n" ;
 
   // open file
-  TagLib::FileStream fileStream(filename, true);
-  TagLib::MP4::File f(&fileStream);
+  MP4::File f(filename);
   if (f.isValid() == false) {
     std::cout << "unable to open file\n";
     return;
   }
 
   // tags
-  TagLib::MP4::Tag *mp4tag = f.tag();  
+  MP4::Tag *mp4tag = f.tag();  
   if (mp4tag == NULL || mp4tag->isEmpty()) {
     std::cout << "no mp4 tags found\n";
     return;
@@ -267,14 +266,14 @@ void get_audio_tags_default(const char *filename, struct Tags &tags) {
   std::cout << "opening generic file\n" ;
 
   // open file
-  TagLib::File *f = TagLib::FileRef::create(filename);
+  File *f = FileRef::create(filename);
   if (f == NULL || f->isValid() == false) {
     std::cout << "unable to open file\n";
     return;
   }
 
   // tags
-  TagLib::Tag *tag = f->tag();
+  Tag *tag = f->tag();
   if (tag == NULL) {
     std::cout << "no tags found\n";
     return;
@@ -337,8 +336,8 @@ FFI_PLUGIN_EXPORT struct Tags get_audio_tags(const char *filename) {
       genre_str_id.erase(genre_str_id.find_last_not_of("(") + 1);
       bool is_only_digits = std::all_of(genre_str_id.begin(), genre_str_id.end(), ::isdigit);
       if (is_only_digits) {
-        TagLib::uint genre_id = atoi(genre_str_id.c_str());
-        TagLib::String taglib_genre = TagLib::ID3v1::genre(genre_id);
+        uint genre_id = atoi(genre_str_id.c_str());
+        String taglib_genre = ID3v1::genre(genre_id);
         if (taglib_genre.isEmpty() == false) {
           SAFE_FREE(tags.genre);
           tags.genre = copy_taglib_str(taglib_genre);

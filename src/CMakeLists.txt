@@ -6,7 +6,7 @@ cmake_minimum_required(VERSION 3.10)
 project(taglib_ffi_library VERSION 0.0.1 LANGUAGES CXX)
 
 add_library(
-  taglib_ffi SHARED "taglib_tags.cxx" "taglib_artwork.cxx"
+  taglib_ffi SHARED "taglib_read_tags.cxx" "taglib_write_tags.cxx" "taglib_artwork.cxx"
 )
 
 set_target_properties(taglib_ffi PROPERTIES

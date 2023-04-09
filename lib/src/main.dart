@@ -23,6 +23,14 @@ class TagLib {
     return tags;
   }
 
+  bool setAudioTags(String filename, Tags tags) {
+    Pointer<taglib.Tags> nativeTags = tags.toNativeTags();
+    int rc = _bindings.set_audio_tags(
+        filename.toNativeUtf8().cast<Char>(), nativeTags);
+    calloc.free(nativeTags);
+    return rc != 0;
+  }
+
   Uint8List? getArtworkBytes(String filename) {
     taglib.Artwork nativeArtwork =
         _bindings.get_artwork(filename.toNativeUtf8().cast<Char>());
