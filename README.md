@@ -1,8 +1,20 @@
 # taglib_ffi
 
+<hr/>
+
+### **Only built/tested on MacOS for now!**
+<hr/>
+
 A dart wrapper of TagLib.
 
-**Only tested on MacOS for now!**
+Supported formats:
+- MP3
+- FLAC
+- MP4 (aka. M4A, aka. ALAC)
+
+Supported fiunctionalities:
+- Read/Update/Delete tags (see below)
+- Read/Update/Delete artwork
 
 ## Dependencies
 
@@ -27,7 +39,7 @@ export HOMEBREW_PREFIX="$(brew --prefix)"
 
 Add as a `pubspec.yaml` dependency.
 
-To read tags:
+To read/write tags:
 
 ```dart
 TagLib tagLib = TagLib();
@@ -35,6 +47,8 @@ Tags tags = tagLib.getAudioTags(filename);
 if (tags.valid) {
   ...
 }
+// update tags
+tagLib.setAudioTag(filename, tags);
 ```
 
 To display artwork:
@@ -50,3 +64,18 @@ Uint8List? artwork = tagLib.getArtworkBytes(filename);
 ```shell
 make tests
 ```
+
+## Supported tags
+
+- Title
+- Album
+- Artist (Album Artist)
+- Performer
+- Composer
+- Genre
+- Copyright
+- Comment
+- Year
+- Compilation
+- Volume/Album Index
+- Track Index
