@@ -14,7 +14,8 @@ void testTags() {
     expect(tags.composer, 'Composer');
     expect(tags.genre, 'Acid');
     expect(tags.copyright, '2023 Copyright');
-    expect(tags.comment, 'Comment');
+    expect(tags.comment,
+        'Dès Noël où un zéphyr haï me vêt de glaçons würmiens je dîne d’exquis rôtis de bœuf au kir à l’aÿ d’âge mûr & cætera !');
     expect(tags.year, 1900);
     expect(tags.compilation, true);
     expect(tags.volumeIndex, 1);
@@ -37,7 +38,8 @@ void testTags() {
     expect(tags.composer, 'Composer');
     expect(tags.genre, 'Acid');
     expect(tags.copyright, '2023 Copyright');
-    expect(tags.comment, 'Comment');
+    expect(tags.comment,
+        'Dès Noël où un zéphyr haï me vêt de glaçons würmiens je dîne d’exquis rôtis de bœuf au kir à l’aÿ d’âge mûr & cætera !');
     expect(tags.year, 1900);
     expect(tags.compilation, true);
     expect(tags.volumeIndex, 1);
@@ -60,7 +62,8 @@ void testTags() {
     expect(tags.composer, 'Composer');
     expect(tags.genre, 'Acid');
     expect(tags.copyright, '2023 Copyright');
-    expect(tags.comment, 'Comment');
+    expect(tags.comment,
+        'Dès Noël où un zéphyr haï me vêt de glaçons würmiens je dîne d’exquis rôtis de bœuf au kir à l’aÿ d’âge mûr & cætera !');
     expect(tags.year, 1900);
     expect(tags.compilation, true);
     expect(tags.volumeIndex, 1);

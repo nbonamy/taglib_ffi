@@ -18,9 +18,9 @@
 #include "id3_tags.h"
 
 char* copy_taglib_str(const TagLib::String &str) {
-  size_t length = str.length();
+  size_t length = strlen(str.to8Bit(true).c_str());
   char* buffer = (char*) malloc(length+1);
-  strncpy(buffer, str.to8Bit(true).c_str(), length);
+  memcpy(buffer, str.to8Bit(true).c_str(), length);
   buffer[length] = '\0';
   return buffer;
 }

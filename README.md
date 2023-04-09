@@ -48,9 +48,5 @@ Uint8List? artwork = tagLib.getArtworkBytes(filename);
 ## Tests
 
 ```shell
-cd src
-cmake .
-make
-cd ../test
-dart main.dart
+make tests
 ```
