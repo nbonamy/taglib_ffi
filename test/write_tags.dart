@@ -1,16 +1,10 @@
 import 'dart:io';
 
 import 'package:test/test.dart';
-import 'package:path/path.dart' as p;
 import 'package:taglib_ffi/src/model.dart' as lib;
 import 'package:taglib_ffi/src/main.dart';
 
-String copyFile(String filename) {
-  Directory tempDir = Directory.systemTemp;
-  String tempFilename = p.join(tempDir.path, 'test${p.extension(filename)}');
-  File(filename).copySync(tempFilename);
-  return tempFilename;
-}
+import 'utils.dart';
 
 void testUpdateTags(String filename) {
   // copy file

@@ -209,19 +209,14 @@ int set_audio_tags_flac(const char *filename, struct Tags *tags) {
   ID3v2::Tag* id3v2tag = f.ID3v2Tag();
   Ogg::XiphComment* xiphComments = f.xiphComment();
 
-  // if id3v2 exists but not vorbis use this
-  if (id3v2tag != NULL && xiphComments == NULL) {
-
-    // update
+  // if id3v2 exists update it
+  if (id3v2tag != NULL) {
     update_id3v2_tags(id3v2tag, tags);
-
-  } else {
-
-    // re-get to ensure they are created
-    xiphComments = f.xiphComment(true);
-    update_vorbis_comments(xiphComments, tags);
-
   }
+
+  // re-get to ensure they are created
+  xiphComments = f.xiphComment(true);
+  update_vorbis_comments(xiphComments, tags);
 
   // log
   std::cout << "saving flac file\n" ;

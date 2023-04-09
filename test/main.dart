@@ -9,5 +9,6 @@ import 'write_tags.dart';
 void main() {
   testReadTags();
   testWriteTags();
-  testArtwork();
+  testReadArtwork();
+  testWriteArtwork();
 }

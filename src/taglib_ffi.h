@@ -58,6 +58,7 @@ extern "C" {
   FFI_PLUGIN_EXPORT void free_audio_tags(struct Tags);
 
   FFI_PLUGIN_EXPORT struct Artwork get_artwork(const char*);
+  FFI_PLUGIN_EXPORT int set_artwork(const char*, struct Artwork*);
   FFI_PLUGIN_EXPORT void free_artwork(struct Artwork);
 
 #ifdef __cplusplus

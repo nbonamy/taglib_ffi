@@ -83,6 +83,23 @@ class TaglibFfiBindings {
   late final _get_artwork =
       _get_artworkPtr.asFunction<Artwork Function(ffi.Pointer<ffi.Char>)>();
 
+  int set_artwork(
+    ffi.Pointer<ffi.Char> arg0,
+    ffi.Pointer<Artwork> arg1,
+  ) {
+    return _set_artwork(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _set_artworkPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<ffi.Char>, ffi.Pointer<Artwork>)>>('set_artwork');
+  late final _set_artwork = _set_artworkPtr
+      .asFunction<int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<Artwork>)>();
+
   void free_artwork(
     Artwork arg0,
   ) {

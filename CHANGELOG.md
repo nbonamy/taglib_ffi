@@ -10,3 +10,7 @@
 ## 0.0.3
 
 * Tag update
+
+## 0.0.4
+
+* Artwork update

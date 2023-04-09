@@ -44,4 +44,19 @@ class TagLib {
       return bytes;
     }
   }
+
+  bool setArtwork(String filename, Uint8List bytes) {
+    // 1st convert buffer
+    final Pointer<Uint8> pointer = malloc.allocate(bytes.length);
+    pointer.asTypedList(bytes.length).setRange(0, bytes.length, bytes);
+
+    final Pointer<taglib.Artwork> artwork = calloc<taglib.Artwork>();
+    artwork.ref.buffer = pointer as Pointer<UnsignedChar>;
+    artwork.ref.size = bytes.lengthInBytes;
+    int rc =
+        _bindings.set_artwork(filename.toNativeUtf8().cast<Char>(), artwork);
+    malloc.free(pointer);
+    calloc.free(artwork);
+    return rc != 0;
+  }
 }
