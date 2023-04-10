@@ -50,7 +50,7 @@ void fetch_audio_properties(AudioProperties *properties, struct Tags &tags) {
 
   // check
   if (properties == NULL) {
-    std::cout << "no audio properties found\n";
+    //std::cout << "no audio properties found\n";
     return;
   }
   
@@ -101,7 +101,7 @@ void get_audio_info_from_tags(ID3v2::Tag *id3v2tag, Ogg::XiphComment *xiphCommen
   if (id3v2tag && id3v2tag->isEmpty() == false) {
 
     // log
-    std::cout << "parsing id3v2 tags\n";
+    //std::cout << "parsing id3v2 tags\n";
 
     // get info
     // artist = TPE2 = Album Artist in iTunes
@@ -135,7 +135,7 @@ void get_audio_info_from_tags(ID3v2::Tag *id3v2tag, Ogg::XiphComment *xiphCommen
   } else if (xiphComments && xiphComments->isEmpty() == false) {
 
     // log
-    std::cout << "parsing vorbis comments\n";
+    //std::cout << "parsing vorbis comments\n";
 
     // basic
     fetch_basic_info(xiphComments, tags);
@@ -154,7 +154,7 @@ void get_audio_info_from_tags(ID3v2::Tag *id3v2tag, Ogg::XiphComment *xiphCommen
 
   } else {
 
-    std::cout << "no id3v2 tags or vorbis comments found\n";
+    //std::cout << "no id3v2 tags or vorbis comments found\n";
 
   }
 
@@ -163,12 +163,12 @@ void get_audio_info_from_tags(ID3v2::Tag *id3v2tag, Ogg::XiphComment *xiphCommen
 void get_audio_tags_mpeg(const char *filename, struct Tags &tags) {
 
   // log
-  std::cout << "opening mpeg file\n" ;
+  //std::cout << "opening mpeg file\n" ;
 
   // open the file
   MPEG::File f(filename);
   if (f.isValid() == false) {
-    std::cout << "unable to open file\n";
+    //std::cout << "unable to open file\n";
     return;
   }
 
@@ -184,12 +184,12 @@ void get_audio_tags_mpeg(const char *filename, struct Tags &tags) {
 void get_audio_tags_flac(const char *filename, struct Tags &tags) {
 
   // log
-  std::cout << "opening flac file\n" ;
+  //std::cout << "opening flac file\n" ;
 
   // open the file
   FLAC::File f(filename);
   if (f.isValid() == false) {
-    std::cout << "unable to open file\n";
+    //std::cout << "unable to open file\n";
     return;
   }
 
@@ -224,24 +224,24 @@ int get_mp4_tag_int(MP4::Tag *mp4tag, const char *key) {
 void get_audio_tags_mp4(const char *filename, struct Tags &tags) {
 
   // log
-  std::cout << "opening mp4 file\n" ;
+  //std::cout << "opening mp4 file\n" ;
 
   // open file
   MP4::File f(filename);
   if (f.isValid() == false) {
-    std::cout << "unable to open file\n";
+    //std::cout << "unable to open file\n";
     return;
   }
 
   // tags
   MP4::Tag *mp4tag = f.tag();  
   if (mp4tag == NULL || mp4tag->isEmpty()) {
-    std::cout << "no mp4 tags found\n";
+    //std::cout << "no mp4 tags found\n";
     return;
   }
 
   // log
-  std::cout << "parsing mp4 tags\n";
+  //std::cout << "parsing mp4 tags\n";
 
   // basic stuff
   fetch_audio_properties(f.audioProperties(), tags);
@@ -263,24 +263,24 @@ void get_audio_tags_mp4(const char *filename, struct Tags &tags) {
 void get_audio_tags_default(const char *filename, struct Tags &tags) {
   
   // log
-  std::cout << "opening generic file\n" ;
+  //std::cout << "opening generic file\n" ;
 
   // open file
   File *f = FileRef::create(filename);
   if (f == NULL || f->isValid() == false) {
-    std::cout << "unable to open file\n";
+    //std::cout << "unable to open file\n";
     return;
   }
 
   // tags
   Tag *tag = f->tag();
   if (tag == NULL) {
-    std::cout << "no tags found\n";
+    //std::cout << "no tags found\n";
     return;
   }
 
   // log
-  std::cout << "parsing generic tags\n";
+  //std::cout << "parsing generic tags\n";
 
   // basic stuff
   fetch_audio_properties(f->audioProperties(), tags);
@@ -348,7 +348,7 @@ FFI_PLUGIN_EXPORT struct Tags get_audio_tags(const char *filename) {
 
   // log
   if (!tags.valid) {
-    std::cout << "no audio tags found\n";
+    //std::cout << "no audio tags found\n";
   }
   
   // done

@@ -172,12 +172,12 @@ void update_mp4_item_int(MP4::Tag *mp4tag, const char *item_name, int value) {
 int set_audio_tags_mpeg(const char *filename, struct Tags *tags) {
 
   // log
-  std::cout << "opening mpeg file\n" ;
+  //std::cout << "opening mpeg file\n" ;
 
   // open the file
   MPEG::File f(filename);
   if (f.isValid() == false) {
-    std::cout << "unable to open file\n";
+    //std::cout << "unable to open file\n";
     return 0;
   }
 
@@ -186,7 +186,7 @@ int set_audio_tags_mpeg(const char *filename, struct Tags *tags) {
   update_id3v2_tags(id3v2tag, tags);
 
   // log
-  std::cout << "saving mpeg file\n" ;
+  //std::cout << "saving mpeg file\n" ;
 
   // done
   return f.save();
@@ -196,12 +196,12 @@ int set_audio_tags_mpeg(const char *filename, struct Tags *tags) {
 int set_audio_tags_flac(const char *filename, struct Tags *tags) {
 
   // log
-  std::cout << "opening flac file\n" ;
+  //std::cout << "opening flac file\n" ;
 
   // open the file
   FLAC::File f(filename);
   if (f.isValid() == false) {
-    std::cout << "unable to open file\n";
+    //std::cout << "unable to open file\n";
     return 0;
   }
 
@@ -219,7 +219,7 @@ int set_audio_tags_flac(const char *filename, struct Tags *tags) {
   update_vorbis_comments(xiphComments, tags);
 
   // log
-  std::cout << "saving flac file\n" ;
+  //std::cout << "saving flac file\n" ;
 
   // done
   return f.save();
@@ -228,19 +228,19 @@ int set_audio_tags_flac(const char *filename, struct Tags *tags) {
 int set_audio_tags_mp4(const char *filename, struct Tags *tags) {
 
   // log
-  std::cout << "opening mp4 file\n" ;
+  //std::cout << "opening mp4 file\n" ;
 
   // open file
   MP4::File f(filename);
   if (f.isValid() == false) {
-    std::cout << "unable to open file\n";
+    //std::cout << "unable to open file\n";
     return 0;
   }
 
   // tags
   MP4::Tag *mp4tag = f.tag();  
   if (mp4tag == NULL) {
-    std::cout << "no mp4 tags found\n";
+    //std::cout << "no mp4 tags found\n";
     return 0;
   }
 
@@ -259,7 +259,7 @@ int set_audio_tags_mp4(const char *filename, struct Tags *tags) {
   update_mp4_item_int(mp4tag, "trkn", tags->track_index);
 
   // log
-  std::cout << "saving mp4 file\n" ;
+  //std::cout << "saving mp4 file\n" ;
 
   // done
   return f.save();

@@ -38,7 +38,7 @@ FFI_PLUGIN_EXPORT struct Artwork get_artwork(const char* filename) {
   // open a file stream so we can manage r/w access
   FileStream fileStream(filename, true);
   if (fileStream.isOpen() == false) {
-    std::cout << "unable to open file\n";
+    //std::cout << "unable to open file\n";
   }
 
   // mp4
@@ -47,7 +47,7 @@ FFI_PLUGIN_EXPORT struct Artwork get_artwork(const char* filename) {
     if (mp4file.isValid() && mp4file.tag()) {
 
       // log
-      std::cout << "trying mp4 cover\n";
+      //std::cout << "trying mp4 cover\n";
 
       // do it
       if (mp4file.tag()->contains("covr")) {
@@ -55,7 +55,7 @@ FFI_PLUGIN_EXPORT struct Artwork get_artwork(const char* filename) {
         if (item.isValid()) {
           MP4::CoverArtList artlist = item.toCoverArtList();
           for (MP4::CoverArtList::ConstIterator it = artlist.begin(); it != artlist.end(); ++it) {
-            std::cout << "got mp4 cover\n";
+            //std::cout << "got mp4 cover\n";
             const MP4::CoverArt& coverart = *it;
             artwork.buffer = (unsigned char*) copy_buffer(coverart.data().data(), coverart.data().size());
             artwork.size = coverart.data().size();
@@ -72,7 +72,7 @@ FFI_PLUGIN_EXPORT struct Artwork get_artwork(const char* filename) {
     if (flacfile.isValid()) {
 
       // log
-      std::cout << "trying flac picture\n";
+      //std::cout << "trying flac picture\n";
 
       // start with FLAC picture list then Vorbis picture list
       List<FLAC::Picture*> pictureList = flacfile.pictureList();
@@ -86,7 +86,7 @@ FFI_PLUGIN_EXPORT struct Artwork get_artwork(const char* filename) {
         }
       }
       if (picture != NULL) {
-        std::cout << "got ogg@flac picture\n";
+        //std::cout << "got ogg@flac picture\n";
         artwork.buffer = (unsigned char*) copy_buffer(picture->data().data(), picture->data().size());
         artwork.size = picture->data().size();
         return artwork;
@@ -98,7 +98,7 @@ FFI_PLUGIN_EXPORT struct Artwork get_artwork(const char* filename) {
         if (!fl.isEmpty()) {
           ID3v2::AttachedPictureFrame* p = static_cast<ID3v2::AttachedPictureFrame*>(fl.front());
           if (p != NULL) {
-            std::cout << "got id3v2@flac picture\n";
+            //std::cout << "got id3v2@flac picture\n";
             artwork.buffer = (unsigned char*) copy_buffer(p->picture().data(), p->picture().size());
             artwork.size = p->picture().size();
             return artwork;
@@ -113,14 +113,14 @@ FFI_PLUGIN_EXPORT struct Artwork get_artwork(const char* filename) {
       if (mpegfile.isValid() && mpegfile.ID3v2Tag()) {
 
         // log
-        std::cout << "trying id3v2 picture\n";
+        //std::cout << "trying id3v2 picture\n";
 
         // get picture
         ID3v2::FrameList fl = mpegfile.ID3v2Tag()->frameListMap()[ID3TID_PICTURE];
         if (!fl.isEmpty()) {
           ID3v2::AttachedPictureFrame* p = static_cast<ID3v2::AttachedPictureFrame*>(fl.front());
           if (p != NULL) {
-            std::cout << "got id3v2 picture\n";
+            //std::cout << "got id3v2 picture\n";
             artwork.buffer = (unsigned char*) copy_buffer(p->picture().data(), p->picture().size());
             artwork.size = p->picture().size();
             return artwork;
@@ -161,7 +161,7 @@ FFI_PLUGIN_EXPORT int set_artwork(const char* filename, struct Artwork *artwork)
   // open a file stream so we can manage r/w access
   FileStream fileStream(filename, false);
   if (fileStream.isOpen() == false) {
-    std::cout << "unable to open file\n";
+    //std::cout << "unable to open file\n";
     return 0;
   }
 
@@ -175,7 +175,7 @@ FFI_PLUGIN_EXPORT int set_artwork(const char* filename, struct Artwork *artwork)
     if (mp4file.isValid() && mp4file.tag()) {
 
       // log
-      std::cout << "deleting mp4 cover\n";
+      //std::cout << "deleting mp4 cover\n";
 
       // delete 1st
       mp4file.tag()->removeItem("covr");
@@ -184,7 +184,7 @@ FFI_PLUGIN_EXPORT int set_artwork(const char* filename, struct Artwork *artwork)
       if (artwork->size > 0) {
 
         // do it
-        std::cout << "adding mp4 cover\n";
+        //std::cout << "adding mp4 cover\n";
         MP4::CoverArtList artList;
         MP4::CoverArt coverArt(MP4::CoverArt::Unknown, ByteVector((const char*) artwork->buffer, (unsigned int) artwork->size));
         artList.append(coverArt);
@@ -204,7 +204,7 @@ FFI_PLUGIN_EXPORT int set_artwork(const char* filename, struct Artwork *artwork)
     if (flacfile.isValid()) {
 
       // log
-      std::cout << "deleting flac pictures\n";
+      //std::cout << "deleting flac pictures\n";
 
       // get tags
       ID3v2::Tag* id3v2tag = flacfile.ID3v2Tag();
@@ -212,15 +212,15 @@ FFI_PLUGIN_EXPORT int set_artwork(const char* filename, struct Artwork *artwork)
 
       // 1st delete
       {
-        std::cout << "deleting flac@flac pictures\n";
+        //std::cout << "deleting flac@flac pictures\n";
         flacfile.removePictures();
       }
       if (id3v2tag != NULL) {
-        std::cout << "deleting id3v2@flac pictures\n";
+        //std::cout << "deleting id3v2@flac pictures\n";
         delete_id3v2_frame(id3v2tag, ID3TID_PICTURE);
       }
       if (xiphComments != NULL) {
-        std::cout << "deleting ogg@flac pictures\n";
+        //std::cout << "deleting ogg@flac pictures\n";
         xiphComments->removeAllPictures();
       }
 
@@ -229,26 +229,26 @@ FFI_PLUGIN_EXPORT int set_artwork(const char* filename, struct Artwork *artwork)
 
         // update flac
         {
-          std::cout << "adding flac@flac picture\n";
+          //std::cout << "adding flac@flac picture\n";
           flacfile.addPicture(get_flac_picture(artwork));
         }
 
         // update id3v2
         if (id3v2tag != NULL) {
-          std::cout << "adding id3v2@flac picture\n";
+          //std::cout << "adding id3v2@flac picture\n";
           set_id3v2_artwork(id3v2tag, artwork);
         }
 
         // update ogg
         if (xiphComments != NULL) {
-          std::cout << "adding ogg@flac picture\n";
+          //std::cout << "adding ogg@flac picture\n";
           xiphComments->addPicture(get_flac_picture(artwork));
         }
         
       }
 
       // done
-      std::cout << "here" << std::endl;
+      //std::cout << "here" << std::endl;
       return flacfile.save();
 
     }
@@ -261,7 +261,7 @@ FFI_PLUGIN_EXPORT int set_artwork(const char* filename, struct Artwork *artwork)
     if (mpegfile.isValid() && mpegfile.ID3v2Tag()) {
 
       // log
-      std::cout << "deleting id3v2 picture\n";
+      //std::cout << "deleting id3v2 picture\n";
 
       // delete 1st
       delete_id3v2_frame(mpegfile.ID3v2Tag(), ID3TID_PICTURE);
@@ -270,7 +270,7 @@ FFI_PLUGIN_EXPORT int set_artwork(const char* filename, struct Artwork *artwork)
       if (artwork->size > 0) {
 
         // do it
-        std::cout << "adding id3v2 picture\n";
+        //std::cout << "adding id3v2 picture\n";
         set_id3v2_artwork(mpegfile.ID3v2Tag(), artwork);
       
       }
