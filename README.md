@@ -78,4 +78,5 @@ make tests
 - Year
 - Compilation
 - Volume/Album Index
+- Volume/Album Count
 - Track Index
