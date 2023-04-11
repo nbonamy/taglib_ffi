@@ -16,7 +16,9 @@ void checkMetadata(lib.Tags tags) {
   expect(tags.year, 1900);
   expect(tags.compilation, true);
   expect(tags.volumeIndex, 1);
+  expect(tags.volumeCount, 2);
   expect(tags.trackIndex, 2);
+  expect(tags.trackCount, 12);
 }
 
 void testReadTags() {

@@ -14,3 +14,8 @@
 ## 0.0.4
 
 * Artwork update
+
+## 0.0.5
+
+* Volume count
+* Track count

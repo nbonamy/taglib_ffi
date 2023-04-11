@@ -19,7 +19,9 @@ class Tags {
   int year;
   bool compilation;
   int volumeIndex;
+  int volumeCount;
   int trackIndex;
+  int trackCount;
   int duration;
   int numChannels;
   int sampleRate;
@@ -39,13 +41,40 @@ class Tags {
     this.year = 0,
     this.compilation = false,
     this.volumeIndex = 0,
+    this.volumeCount = 0,
     this.trackIndex = 0,
+    this.trackCount = 0,
     this.duration = 0,
     this.numChannels = 0,
     this.sampleRate = 0,
     this.bitsPerSample = 0,
     this.bitrate = 0,
   });
+
+  factory Tags.copy(Tags other) {
+    return Tags(
+      valid: other.valid,
+      title: other.title,
+      album: other.album,
+      artist: other.artist,
+      performer: other.performer,
+      composer: other.composer,
+      genre: other.genre,
+      copyright: other.copyright,
+      comment: other.comment,
+      year: other.year,
+      compilation: other.compilation,
+      volumeIndex: other.volumeIndex,
+      volumeCount: other.volumeCount,
+      trackIndex: other.trackIndex,
+      trackCount: other.trackCount,
+      duration: other.duration,
+      numChannels: other.numChannels,
+      sampleRate: other.sampleRate,
+      bitsPerSample: other.bitsPerSample,
+      bitrate: other.bitrate,
+    );
+  }
 
   factory Tags.fromNativeTags(taglib.Tags tags) {
     if (tags.valid == 0) {
@@ -65,7 +94,9 @@ class Tags {
       year: tags.year,
       compilation: tags.compilation == 1,
       volumeIndex: tags.volume_index,
+      volumeCount: tags.volume_count,
       trackIndex: tags.track_index,
+      trackCount: tags.track_count,
       duration: tags.duration,
       numChannels: tags.num_channels,
       sampleRate: tags.sample_rate,
@@ -88,8 +119,34 @@ class Tags {
     tags.ref.year = year;
     tags.ref.compilation = compilation ? 1 : 0;
     tags.ref.volume_index = volumeIndex;
+    tags.ref.volume_count = volumeCount;
     tags.ref.track_index = trackIndex;
+    tags.ref.track_count = trackCount;
     return tags;
+  }
+
+  bool equals(Tags? other) {
+    if (other == null) return false;
+    return valid == other.valid &&
+        title == other.title &&
+        album == other.album &&
+        artist == other.artist &&
+        performer == other.performer &&
+        composer == other.composer &&
+        genre == other.genre &&
+        copyright == other.copyright &&
+        comment == other.comment &&
+        year == other.year &&
+        compilation == other.compilation &&
+        volumeIndex == other.volumeIndex &&
+        volumeCount == other.volumeCount &&
+        trackIndex == other.trackIndex &&
+        trackCount == other.trackCount &&
+        duration == other.duration &&
+        numChannels == other.numChannels &&
+        sampleRate == other.sampleRate &&
+        bitsPerSample == other.bitsPerSample &&
+        bitrate == other.bitrate;
   }
 
   static String _fromNativeString(Pointer<Char> ptr) {

@@ -46,6 +46,12 @@ String get_tag_value(ID3v2::Tag *tag, const char *tag_name) {
   return "";
 }
 
+int int_from_pair(String value, int index) {
+  StringList ints = value.split("/");
+  if (ints.size() > index) return ints[index].toInt();
+  else return ints.front().toInt();
+}
+
 void fetch_audio_properties(AudioProperties *properties, struct Tags &tags) {
 
   // check
@@ -115,8 +121,10 @@ void get_audio_info_from_tags(ID3v2::Tag *id3v2tag, Ogg::XiphComment *xiphCommen
     tags.copyright = copy_taglib_str(get_tag_value(id3v2tag, ID3TID_COPYRIGHT));
     tags.comment = copy_taglib_str(get_tag_value(id3v2tag, ID3TID_COMMENT));
     tags.year = get_tag_value(id3v2tag, ID3TID_RECORDINGTIME).toInt();
-    tags.volume_index = get_tag_value(id3v2tag, ID3TID_PARTINSET).toInt();
-    tags.track_index = get_tag_value(id3v2tag, ID3TID_TRACKNUM).toInt();
+    tags.volume_index = int_from_pair(get_tag_value(id3v2tag, ID3TID_PARTINSET), 0);
+    tags.volume_count = int_from_pair(get_tag_value(id3v2tag, ID3TID_PARTINSET), 1);
+    tags.track_index = int_from_pair(get_tag_value(id3v2tag, ID3TID_TRACKNUM), 0);
+    tags.track_count = int_from_pair(get_tag_value(id3v2tag, ID3TID_TRACKNUM), 1);
 
     // misc stuff
     if (tags.year == 0) {
@@ -148,6 +156,8 @@ void get_audio_info_from_tags(ID3v2::Tag *id3v2tag, Ogg::XiphComment *xiphCommen
     tags.comment = copy_taglib_str(get_xiph_comment(xiphComments, "COMMENT"));
     tags.compilation = get_xiph_comment(xiphComments, "COMPILATION").toInt() == 1;
     tags.volume_index = get_xiph_comment(xiphComments, "DISCNUMBER").toInt();
+    tags.volume_count = get_xiph_comment(xiphComments, "DISCTOTAL").toInt();
+    tags.track_count = get_xiph_comment(xiphComments, "TRACKTOTAL").toInt();
 
     // done
     tags.valid = true;
@@ -212,10 +222,12 @@ String get_mp4_tag_string(MP4::Tag *mp4tag, const char *key) {
   }
 }
 
-int get_mp4_tag_int(MP4::Tag *mp4tag, const char *key) {
+int get_mp4_tag_int(MP4::Tag *mp4tag, const char *key, int index = 0) {
   if (mp4tag->contains(key)) {
     MP4::Item item = mp4tag->item(key);
-    return item.toInt();
+    MP4::Item::IntPair pair = item.toIntPair();
+    if (index == 1) return pair.second;
+    else return pair.first;
   } else {
     return 0;
   }
@@ -254,7 +266,9 @@ void get_audio_tags_mp4(const char *filename, struct Tags &tags) {
   tags.copyright = copy_taglib_str(get_mp4_tag_string(mp4tag, "cprt"));
   tags.comment = copy_taglib_str(get_mp4_tag_string(mp4tag, "\251cmt"));
   tags.compilation = get_mp4_tag_int(mp4tag, "cpil") == 1;
-  tags.volume_index = get_mp4_tag_int(mp4tag, "disk");
+  tags.volume_index = get_mp4_tag_int(mp4tag, "disk", 0);
+  tags.volume_count = get_mp4_tag_int(mp4tag, "disk", 1);
+  tags.track_count = get_mp4_tag_int(mp4tag, "trkn", 1);
 
   // done
   tags.valid = true;

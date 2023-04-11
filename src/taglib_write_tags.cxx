@@ -58,6 +58,27 @@ void update_id3v2_frame_int(ID3v2::Tag* id3v2tag, const char *frame_name, int va
 
 }
 
+void update_id3v2_frame_int2(ID3v2::Tag* id3v2tag, const char *frame_name, int value1, int value2) {
+
+  // second value is optional
+  if (value2 == 0) {
+    update_id3v2_frame_int(id3v2tag, frame_name, value1);
+    return;
+  }
+  
+  // build string value
+  const size_t k_max_size = 256;
+  char str_value[k_max_size];
+  memset(str_value, 0, k_max_size);
+  if (value1 > 0 || value2 > 0) {
+    snprintf(str_value, k_max_size, "%d/%d", value1, value2);
+  }
+
+  // now do it
+  update_id3v2_frame_str(id3v2tag, frame_name, str_value);
+
+}
+
 void update_id3v2_tags(ID3v2::Tag* id3v2tag, struct Tags *tags) {
 
   // update simple frames
@@ -70,8 +91,8 @@ void update_id3v2_tags(ID3v2::Tag* id3v2tag, struct Tags *tags) {
   update_id3v2_frame_str(id3v2tag, ID3TID_COPYRIGHT, tags->copyright);
   update_id3v2_frame_int(id3v2tag, ID3TID_RECORDINGTIME, tags->year);
   update_id3v2_frame_int(id3v2tag, "TCMP", tags->compilation);
-  update_id3v2_frame_int(id3v2tag, ID3TID_PARTINSET, tags->volume_index);
-  update_id3v2_frame_int(id3v2tag, ID3TID_TRACKNUM, tags->track_index);
+  update_id3v2_frame_int2(id3v2tag, ID3TID_PARTINSET, tags->volume_index, tags->volume_count);
+  update_id3v2_frame_int2(id3v2tag, ID3TID_TRACKNUM, tags->track_index, tags->track_count);
 
   // comment is different
   delete_id3v2_frame(id3v2tag, ID3TID_COMMENT);
@@ -124,7 +145,9 @@ void update_vorbis_comments(Ogg::XiphComment *xiphComments, struct Tags *tags) {
   update_vorbis_field_int(xiphComments, "DATE", tags->year);
   update_vorbis_field_int(xiphComments, "COMPILATION", tags->compilation);
   update_vorbis_field_int(xiphComments, "DISCNUMBER", tags->volume_index);
+  update_vorbis_field_int(xiphComments, "DISCTOTAL", tags->volume_count);
   update_vorbis_field_int(xiphComments, "TRACKNUMBER", tags->track_index);
+  update_vorbis_field_int(xiphComments, "TRACKTOTAL", tags->track_count);
 
 }
 
@@ -166,6 +189,25 @@ void update_mp4_item_int(MP4::Tag *mp4tag, const char *item_name, int value) {
 
   // now do it
   mp4tag->setItem(item_name, MP4::Item(value));
+
+}
+
+void update_mp4_item_int2(MP4::Tag *mp4tag, const char *item_name, int value1, int value2) {
+
+  // second value is optional
+  if (value2 == 0) {
+    update_mp4_item_int(mp4tag, item_name, value1);
+    return;
+  }
+  
+  // delete
+  mp4tag->removeItem(item_name);
+  if (value1 <= 0 && value2 <= 0) {
+    return;
+  }
+
+  // now do it
+  mp4tag->setItem(item_name, MP4::Item(value1, value2));
 
 }
 
@@ -255,8 +297,8 @@ int set_audio_tags_mp4(const char *filename, struct Tags *tags) {
   update_mp4_item_str(mp4tag, "\251cmt", tags->comment);
   update_mp4_item_str(mp4tag, "\251day", tags->year);
   update_mp4_item_int(mp4tag, "cpil", tags->compilation);
-  update_mp4_item_int(mp4tag, "disk", tags->volume_index);
-  update_mp4_item_int(mp4tag, "trkn", tags->track_index);
+  update_mp4_item_int2(mp4tag, "disk", tags->volume_index, tags->volume_count);
+  update_mp4_item_int2(mp4tag, "trkn", tags->track_index, tags->track_count);
 
   // log
   //std::cout << "saving mp4 file\n" ;

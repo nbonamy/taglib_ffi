@@ -144,7 +144,13 @@ class Tags extends ffi.Struct {
   external int volume_index;
 
   @ffi.Int()
+  external int volume_count;
+
+  @ffi.Int()
   external int track_index;
+
+  @ffi.Int()
+  external int track_count;
 
   @ffi.Int()
   external int duration;

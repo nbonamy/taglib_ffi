@@ -1,6 +1,6 @@
 name: taglib_ffi
 description: FFI Wrapper for tablib
-version: 0.0.4
+version: 0.0.5
 homepage: https://github.com/nbonamy/taglib_ffi
 
 environment:

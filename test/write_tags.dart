@@ -26,7 +26,9 @@ void testUpdateTags(String filename) {
   tags.year = 2023;
   tags.compilation = false;
   tags.volumeIndex = 2;
+  tags.volumeCount = 5;
   tags.trackIndex = 3;
+  tags.trackCount = 20;
 
   // now run it
   expect(tagLib.setAudioTags(tempCopy, tags), true);
@@ -45,7 +47,9 @@ void testUpdateTags(String filename) {
   expect(tags2.year, tags.year);
   expect(tags2.compilation, tags.compilation);
   expect(tags2.volumeIndex, tags.volumeIndex);
+  expect(tags2.volumeCount, tags.volumeCount);
   expect(tags2.trackIndex, tags.trackIndex);
+  expect(tags2.trackCount, tags.trackCount);
 
   // done
   File(tempCopy).deleteSync();

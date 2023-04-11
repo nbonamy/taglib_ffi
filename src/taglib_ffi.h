@@ -40,7 +40,9 @@ extern "C" {
     unsigned int year;
     bool compilation;
     int volume_index;
+    int volume_count;
     int track_index;
+    int track_count;
     int duration;
     int num_channels;
     int sample_rate;
