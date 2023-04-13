@@ -14,7 +14,7 @@ void checkMetadata(lib.Tags tags) {
   expect(tags.comment,
       'Dès Noël où un zéphyr haï me vêt de glaçons würmiens je dîne d’exquis rôtis de bœuf au kir à l’aÿ d’âge mûr & cætera !');
   expect(tags.year, 1900);
-  expect(tags.compilation, true);
+  expect(tags.compilation, 1);
   expect(tags.volumeIndex, 1);
   expect(tags.volumeCount, 2);
   expect(tags.trackIndex, 2);

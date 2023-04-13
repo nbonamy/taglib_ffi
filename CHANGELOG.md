@@ -24,3 +24,7 @@
 
 * GetArtwork is now async
 * Volume/Track count fix when not present in MP3 file
+
+# 0.0.7
+
+* Compilation as int (to allow mixed)
