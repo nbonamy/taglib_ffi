@@ -19,3 +19,8 @@
 
 * Volume count
 * Track count
+
+## 0.0.6
+
+* GetArtwork is now async
+* Volume/Track count fix when not present in MP3 file

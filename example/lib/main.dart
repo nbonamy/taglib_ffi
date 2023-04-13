@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:taglib_ffi/taglib_ffi.dart';
@@ -17,7 +16,6 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final TagLib _tagLib = TagLib();
   String? _filename;
-  Uint8List? _artwork;
   Tags? _tags;
   @override
   void initState() {
@@ -47,7 +45,6 @@ class _MyAppState extends State<MyApp> {
                         setState(() {
                           _filename = result.files.single.path;
                           _tags = _tagLib.getAudioTags(_filename!);
-                          _artwork = _tagLib.getArtworkBytes(_filename!);
                         });
                       }
                     }),
@@ -58,31 +55,44 @@ class _MyAppState extends State<MyApp> {
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 16),
-                  if (_artwork != null) ...[
-                    Image.memory(_artwork!),
-                    const SizedBox(height: 16),
-                  ],
+                  FutureBuilder(
+                      future: _tagLib.getArtworkBytes(_filename!),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData && snapshot.data != null) {
+                          return Container(
+                            margin: const EdgeInsets.only(bottom: 16),
+                            child: Image.memory(
+                              snapshot.data!,
+                              height: 64,
+                            ),
+                          );
+                        } else {
+                          return Container();
+                        }
+                      }),
                   if (_tags != null) ...[
                     if (!_tags!.valid)
                       const Text('No tags')
                     else ...[
-                      Text(_tags!.title),
-                      Text(_tags!.album),
-                      Text(_tags!.artist),
-                      Text(_tags!.performer),
-                      Text(_tags!.composer),
-                      Text(_tags!.genre),
-                      Text(_tags!.copyright),
-                      Text(_tags!.comment),
-                      Text(_tags!.year.toString()),
-                      Text(_tags!.compilation.toString()),
-                      Text('${_tags!.volumeIndex} / ${_tags!.volumeCount}'),
-                      Text('${_tags!.trackIndex} / ${_tags!.trackCount}'),
-                      Text(_tags!.duration.toString()),
-                      Text(_tags!.numChannels.toString()),
-                      Text(_tags!.sampleRate.toString()),
-                      Text(_tags!.bitsPerSample.toString()),
-                      Text(_tags!.bitrate.toString()),
+                      Text('Title: ${_tags!.title}'),
+                      Text('Album: ${_tags!.album}'),
+                      Text('Artist: ${_tags!.artist}'),
+                      Text('Performer: ${_tags!.performer}'),
+                      Text('Composer: ${_tags!.composer}'),
+                      Text('Genre: ${_tags!.genre}'),
+                      Text('Copyright: ${_tags!.copyright}'),
+                      Text('Comment: ${_tags!.comment}'),
+                      Text('Year: ${_tags!.year}'),
+                      Text('Compilation: ${_tags!.compilation}'),
+                      Text(
+                          'Volume: ${_tags!.volumeIndex} / ${_tags!.volumeCount}'),
+                      Text(
+                          'Track: ${_tags!.trackIndex} / ${_tags!.trackCount}'),
+                      Text('Duration: ${_tags!.duration}'),
+                      Text('Chanels: ${_tags!.numChannels}'),
+                      Text('Sample Rate: ${_tags!.sampleRate}'),
+                      Text('Bits per Sample: ${_tags!.bitsPerSample}'),
+                      Text('Bitrate: ${_tags!.bitrate}'),
                     ],
                   ],
                 ],

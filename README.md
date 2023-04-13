@@ -55,8 +55,10 @@ To display artwork:
 
 ```dart
 TagLib tagLib = TagLib();
-Uint8List? artwork = tagLib.getArtworkBytes(filename);
--> Image.memory(_artwork!)
+FutureBuilder(
+  future: tagLib.getArtworkBytes(filename),
+  builder: (_, snapshot) => Image.memory(snapshot.data)
+)
 ```
 
 ## Tests

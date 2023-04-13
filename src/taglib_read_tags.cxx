@@ -49,7 +49,7 @@ String get_tag_value(ID3v2::Tag *tag, const char *tag_name) {
 int int_from_pair(String value, int index) {
   StringList ints = value.split("/");
   if (ints.size() > index) return ints[index].toInt();
-  else return ints.front().toInt();
+  else return 0;
 }
 
 void fetch_audio_properties(AudioProperties *properties, struct Tags &tags) {
