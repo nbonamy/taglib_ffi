@@ -19,7 +19,7 @@ class Tags {
   String copyright;
   String comment;
   int year;
-  int compilation;
+  bool compilation;
   int volumeIndex;
   int volumeCount;
   int trackIndex;
@@ -41,7 +41,7 @@ class Tags {
     this.copyright = '',
     this.comment = '',
     this.year = 0,
-    this.compilation = 0,
+    this.compilation = false,
     this.volumeIndex = 0,
     this.volumeCount = 0,
     this.trackIndex = 0,
@@ -94,7 +94,7 @@ class Tags {
       copyright: _fromNativeString(tags.copyright),
       comment: _fromNativeString(tags.comment),
       year: tags.year,
-      compilation: tags.compilation,
+      compilation: tags.compilation == 1,
       volumeIndex: tags.volume_index,
       volumeCount: tags.volume_count,
       trackIndex: tags.track_index,
@@ -119,7 +119,7 @@ class Tags {
     tags.ref.copyright = copyright.toNativeUtf8().cast<Char>();
     tags.ref.comment = comment.toNativeUtf8().cast<Char>();
     tags.ref.year = year;
-    tags.ref.compilation = compilation;
+    tags.ref.compilation = compilation ? 1 : 0;
     tags.ref.volume_index = volumeIndex;
     tags.ref.volume_count = volumeCount;
     tags.ref.track_index = trackIndex;

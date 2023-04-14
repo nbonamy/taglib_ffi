@@ -24,7 +24,7 @@ void testUpdateTags(String filename) {
   tags.copyright = '2023 Droits restreints';
   tags.comment = 'Commentaire';
   tags.year = 2023;
-  tags.compilation = 0;
+  tags.compilation = false;
   tags.volumeIndex = 2;
   tags.volumeCount = 5;
   tags.trackIndex = 3;

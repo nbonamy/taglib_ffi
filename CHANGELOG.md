@@ -28,3 +28,8 @@
 # 0.0.7
 
 * Compilation as int (to allow mixed)
+
+# 0.0.8
+
+* Revert on 0.0.7
+
