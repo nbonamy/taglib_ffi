@@ -21,7 +21,28 @@ void testUpdateLyrics(String filename, String lyrics) {
   File(tempCopy).deleteSync();
 }
 
-void testReadLyrics() {}
+void testReadLyrics() {
+  test('mp3', () async {
+    TagLib tagLib = TagLib(path: '../src', test: true);
+    String lyrics = tagLib.getLyrics('../data/sample.mp3');
+    expect(lyrics,
+        'All I ever needed\nIs here in my arms\nWords are very unnecessary\nThey can only do harm');
+  });
+
+  test('flac', () async {
+    TagLib tagLib = TagLib(path: '../src', test: true);
+    String lyrics = tagLib.getLyrics('../data/sample.flac');
+    expect(lyrics,
+        'All I ever needed\nIs here in my arms\nWords are very unnecessary\nThey can only do harm');
+  });
+
+  test('m4a', () async {
+    TagLib tagLib = TagLib(path: '../src', test: true);
+    String lyrics = tagLib.getLyrics('../data/sample.m4a');
+    expect(lyrics,
+        'All I ever needed\nIs here in my arms\nWords are very unnecessary\nThey can only do harm');
+  });
+}
 
 void testWriteLyrics() {
   test('mp3', () {
