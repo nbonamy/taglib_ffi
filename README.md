@@ -15,6 +15,7 @@ Supported formats:
 Supported fiunctionalities:
 - Read/Update/Delete tags (see below)
 - Read/Update/Delete artwork
+- Read/Update/Delete lyrics
 
 ## Dependencies
 
@@ -59,6 +60,14 @@ FutureBuilder(
   future: tagLib.getArtworkBytes(filename),
   builder: (_, snapshot) => Image.memory(snapshot.data)
 )
+```
+
+To read/write lyrics:
+```dart
+TagLib tagLib = TagLib();
+String lyrics = tagLib.getLyrics(filename);
+// update lyrics
+tagLib.setLyrics(filename, lyrics);
 ```
 
 ## Tests
