@@ -50,6 +50,10 @@ extern "C" {
     int bitrate;
   };
 
+  struct Lyrics {
+    char* lyrics;
+  };
+
   struct Artwork {
     unsigned char* buffer;
     size_t size;
@@ -58,6 +62,10 @@ extern "C" {
   FFI_PLUGIN_EXPORT struct Tags get_audio_tags(const char*);
   FFI_PLUGIN_EXPORT int set_audio_tags(const char*, struct Tags*);
   FFI_PLUGIN_EXPORT void free_audio_tags(struct Tags);
+
+  FFI_PLUGIN_EXPORT struct Lyrics get_lyrics(const char*);
+  FFI_PLUGIN_EXPORT int set_lyrics(const char*, struct Lyrics*);
+  FFI_PLUGIN_EXPORT void free_lyrics(struct Lyrics);
 
   FFI_PLUGIN_EXPORT struct Artwork get_artwork(const char*);
   FFI_PLUGIN_EXPORT int set_artwork(const char*, struct Artwork*);

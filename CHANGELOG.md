@@ -33,3 +33,7 @@
 
 * Revert on 0.0.7
 
+# 0.0.9
+
+* Lyrics
+

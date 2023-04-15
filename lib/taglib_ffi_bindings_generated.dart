@@ -69,6 +69,49 @@ class TaglibFfiBindings {
   late final _free_audio_tags =
       _free_audio_tagsPtr.asFunction<void Function(Tags)>();
 
+  Lyrics get_lyrics(
+    ffi.Pointer<ffi.Char> arg0,
+  ) {
+    return _get_lyrics(
+      arg0,
+    );
+  }
+
+  late final _get_lyricsPtr =
+      _lookup<ffi.NativeFunction<Lyrics Function(ffi.Pointer<ffi.Char>)>>(
+          'get_lyrics');
+  late final _get_lyrics =
+      _get_lyricsPtr.asFunction<Lyrics Function(ffi.Pointer<ffi.Char>)>();
+
+  int set_lyrics(
+    ffi.Pointer<ffi.Char> arg0,
+    ffi.Pointer<Lyrics> arg1,
+  ) {
+    return _set_lyrics(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _set_lyricsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<ffi.Char>, ffi.Pointer<Lyrics>)>>('set_lyrics');
+  late final _set_lyrics = _set_lyricsPtr
+      .asFunction<int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<Lyrics>)>();
+
+  void free_lyrics(
+    Lyrics arg0,
+  ) {
+    return _free_lyrics(
+      arg0,
+    );
+  }
+
+  late final _free_lyricsPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(Lyrics)>>('free_lyrics');
+  late final _free_lyrics = _free_lyricsPtr.asFunction<void Function(Lyrics)>();
+
   Artwork get_artwork(
     ffi.Pointer<ffi.Char> arg0,
   ) {
@@ -166,6 +209,10 @@ class Tags extends ffi.Struct {
 
   @ffi.Int()
   external int bitrate;
+}
+
+class Lyrics extends ffi.Struct {
+  external ffi.Pointer<ffi.Char> lyrics;
 }
 
 class Artwork extends ffi.Struct {

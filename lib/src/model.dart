@@ -7,6 +7,7 @@ import 'dart:ffi';
 import 'package:ffi/ffi.dart';
 
 import '../taglib_ffi_bindings_generated.dart' as taglib;
+import 'utils.dart';
 
 class Tags {
   bool valid;
@@ -85,14 +86,14 @@ class Tags {
 
     return Tags(
       valid: true,
-      title: _fromNativeString(tags.title),
-      album: _fromNativeString(tags.album),
-      artist: _fromNativeString(tags.artist),
-      performer: _fromNativeString(tags.performer),
-      composer: _fromNativeString(tags.composer),
-      genre: _fromNativeString(tags.genre),
-      copyright: _fromNativeString(tags.copyright),
-      comment: _fromNativeString(tags.comment),
+      title: fromNativeString(tags.title),
+      album: fromNativeString(tags.album),
+      artist: fromNativeString(tags.artist),
+      performer: fromNativeString(tags.performer),
+      composer: fromNativeString(tags.composer),
+      genre: fromNativeString(tags.genre),
+      copyright: fromNativeString(tags.copyright),
+      comment: fromNativeString(tags.comment),
       year: tags.year,
       compilation: tags.compilation == 1,
       volumeIndex: tags.volume_index,
@@ -149,9 +150,5 @@ class Tags {
         sampleRate == other.sampleRate &&
         bitsPerSample == other.bitsPerSample &&
         bitrate == other.bitrate;
-  }
-
-  static String _fromNativeString(Pointer<Char> ptr) {
-    return ptr == nullptr ? '' : ptr.cast<Utf8>().toDartString();
   }
 }

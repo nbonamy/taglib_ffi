@@ -82,6 +82,23 @@ class TagLib {
     calloc.free(artwork);
     return rc != 0;
   }
+
+  String getLyrics(String filename) {
+    taglib.Lyrics nativeLyrics =
+        _bindings.get_lyrics(filename.toNativeUtf8().cast<Char>());
+    String lyrics = fromNativeString(nativeLyrics.lyrics);
+    _bindings.free_lyrics(nativeLyrics);
+    return lyrics;
+  }
+
+  bool setLyrics(String filename, String lyrics) {
+    final Pointer<taglib.Lyrics> nativeLyrics = calloc<taglib.Lyrics>();
+    nativeLyrics.ref.lyrics = lyrics.toNativeUtf8().cast<Char>();
+    int rc = _bindings.set_lyrics(
+        filename.toNativeUtf8().cast<Char>(), nativeLyrics);
+    calloc.free(nativeLyrics);
+    return rc != 0;
+  }
 }
 
 class _ArtworkRequest {

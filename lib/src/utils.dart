@@ -1,6 +1,8 @@
 import 'dart:ffi';
 import 'dart:io';
 
+import 'package:ffi/ffi.dart';
+
 const String _libName = 'taglib_ffi';
 DynamicLibrary loadLibrary(String path, bool test) {
   String fullpath = '';
@@ -24,4 +26,8 @@ DynamicLibrary loadLibrary(String path, bool test) {
   } else {
     return DynamicLibrary.executable();
   }
+}
+
+String fromNativeString(Pointer<Char> ptr) {
+  return ptr == nullptr ? '' : ptr.cast<Utf8>().toDartString();
 }

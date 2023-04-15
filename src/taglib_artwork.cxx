@@ -18,7 +18,7 @@
 
 #include "id3_tags.h"
 
-#include "taglib_write_tags.h"
+#include "taglib_utils.h"
 
 using namespace TagLib;
 
@@ -94,7 +94,7 @@ FFI_PLUGIN_EXPORT struct Artwork get_artwork(const char* filename) {
 
       // then id3v2
       if (flacfile.ID3v2Tag()) {
-        ID3v2::FrameList fl = flacfile.ID3v2Tag()->frameListMap()["APIC"];
+        ID3v2::FrameList fl = flacfile.ID3v2Tag()->frameListMap()[ID3TID_PICTURE];
         if (!fl.isEmpty()) {
           ID3v2::AttachedPictureFrame* p = static_cast<ID3v2::AttachedPictureFrame*>(fl.front());
           if (p != NULL) {
