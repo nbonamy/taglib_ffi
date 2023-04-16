@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'taglib_ffi'
-  s.version          = '0.0.9'
+  s.version          = '1.0.0'
   s.summary          = 'TagLib FFI'
   s.description      = 'TagLib FFI'
   s.homepage         = 'https://github.com/nbonamy/taglib_ffi'
@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   s.source_files     = 'Classes/**/*'
   s.dependency 'FlutterMacOS'
 
-  s.dependency 'taglib.framework', '1.13'
+  s.dependency 'taglib.framework', '1.0.0'
 
   s.platform = :osx, '11.0'
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES' }

@@ -1,13 +1,13 @@
 
 Pod::Spec.new do |s|
   s.name             = 'taglib-framework'
-  s.version          = '1.13'
+  s.version          = '1.0.0'
   s.summary          = 'TagLib'
-  s.description      = 'TagLib'
+  s.description      = 'TagLib as a framwork'
   s.homepage         = 'https://taglib.org/'
-  s.license          = { :file => '../LICENSE' }
+  s.license          = { :file => '../taglib/LICENSE', :type => 'MPL' }
   s.author           = { 'Nicolas Bonamy' => 'nbonamy@gmail.com' }
-  s.source           = { :git => 'https://github.com/nbonamy/taglib_ffi.git', :tag => 'main' }
+  s.source           = { :git => 'https://github.com/nbonamy/taglib_ffi.git', :tag => s.version.to_s }
   s.module_name      = 'taglib'
   s.vendored_frameworks = 'macos/tag.framework'
   s.platform = :osx, '11.0'
