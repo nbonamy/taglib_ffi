@@ -1,6 +1,6 @@
 PODS:
   - FlutterMacOS (1.0.0)
-  - taglib_ffi (0.0.1):
+  - taglib_ffi (0.0.9):
     - FlutterMacOS
 
 DEPENDENCIES:
@@ -15,7 +15,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   FlutterMacOS: 8f6f14fa908a6fb3fba0cd85dbd81ec4b251fb24
-  taglib_ffi: 038c207a740bb898846d81a191f06f9554da9980
+  taglib_ffi: 55d354b04debe3427d0f89427272583dfdb6deea
 
 PODFILE CHECKSUM: 353c8bcc5d5b0994e508d035b5431cfe18c1dea7
 
