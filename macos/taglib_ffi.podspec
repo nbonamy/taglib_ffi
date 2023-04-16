@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
   # builds of apps using this FFI plugin. Podspec does not support relative
   # paths, so Classes contains a forwarder C file that relatively imports
   # `../src/*` so that the C sources can be shared among all target platforms.
-  s.source           = { :git => 'https://github.com/nbonamy/taglib_ffi.git' :tag => 'main' }
+  s.source           = { :git => 'https://github.com/nbonamy/taglib_ffi.git', :tag => 'main' }
   s.source_files     = 'Classes/**/*'
   s.dependency 'FlutterMacOS'
 
