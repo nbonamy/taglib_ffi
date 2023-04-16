@@ -3,7 +3,7 @@ Pod::Spec.new do |s|
   s.name             = 'taglib-framework'
   s.version          = '1.0.0'
   s.summary          = 'TagLib'
-  s.description      = 'TagLib as a framwork'
+  s.description      = 'TagLib as a universal framwork'
   s.homepage         = 'https://taglib.org/'
   s.license          = { :file => '../taglib/LICENSE', :type => 'MPL' }
   s.author           = { 'Nicolas Bonamy' => 'nbonamy@gmail.com' }
