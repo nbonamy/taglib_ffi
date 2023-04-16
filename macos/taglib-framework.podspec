@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'taglib-framework'
-  s.version          = '1.0.0'
+  s.version          = '1.13'
   s.summary          = 'TagLib'
   s.description      = 'TagLib as a universal framwork'
   s.homepage         = 'https://taglib.org/'
