@@ -8,7 +8,7 @@ Pod::Spec.new do |s|
   s.license          = { :file => '../LICENSE' }
   s.author           = { 'Nicolas Bonamy' => 'nbonamy@gmail.com' }
   s.source           = { :git => 'https://github.com/nbonamy/taglib_ffi.git', :tag => 'main' }
-  s.module_name      = 'taglib-framework'
+  s.module_name      = 'taglib'
   s.vendored_frameworks = 'tag.xcframework'
   s.platform = :osx, '11.0'
 end
