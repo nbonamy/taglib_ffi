@@ -50,7 +50,7 @@ class TagLib {
 
   Future<Uint8List?> getArtworkBytes(String filename) async {
     final SendPort helperIsolateSendPort = await _helperIsolateSendPort;
-    final int requestId = _nextArtworkRequestId++;
+    final int requestId = _nextRequestId++;
     final _ArtworkRequest request = _ArtworkRequest(requestId, filename);
     final Completer<taglib.Artwork> completer = Completer<taglib.Artwork>();
     _artworkRequests[requestId] = completer;
@@ -83,12 +83,16 @@ class TagLib {
     return rc != 0;
   }
 
-  String getLyrics(String filename) {
-    taglib.Lyrics nativeLyrics =
-        _bindings.get_lyrics(filename.toNativeUtf8().cast<Char>());
-    String lyrics = fromNativeString(nativeLyrics.lyrics);
-    _bindings.free_lyrics(nativeLyrics);
-    return lyrics;
+  Future<String> getLyrics(String filename) async {
+    final SendPort helperIsolateSendPort = await _helperIsolateSendPort;
+    final int requestId = _nextRequestId++;
+    final _LyricsRequest request = _LyricsRequest(requestId, filename);
+    final Completer<taglib.Lyrics> completer = Completer<taglib.Lyrics>();
+    _lyricsRequests[requestId] = completer;
+    helperIsolateSendPort.send(request);
+    return completer.future.then((nativeLyrics) {
+      return fromNativeString(nativeLyrics.lyrics);
+    });
   }
 
   bool setLyrics(String filename, String lyrics) {
@@ -113,12 +117,26 @@ class _ArtworkResponse {
   _ArtworkResponse(this.id, this.artwork);
 }
 
-/// Counter to identify [_SumRequest]s and [_SumResponse]s.
-int _nextArtworkRequestId = 0;
+class _LyricsRequest {
+  final int id;
+  final String filename;
+  const _LyricsRequest(this.id, this.filename);
+}
 
-/// Mapping from [_SumRequest] `id`s to the completers corresponding to the correct future of the pending request.
+class _LyricsResponse {
+  final int id;
+  final taglib.Lyrics lyrics;
+  _LyricsResponse(this.id, this.lyrics);
+}
+
+/// Counter to identify [_SumRequest]s and [_SumResponse]s.
+int _nextRequestId = 0;
+
+/// Mapping from request `id`s to the completers corresponding to the correct future of the pending request.
 final Map<int, Completer<taglib.Artwork>> _artworkRequests =
     <int, Completer<taglib.Artwork>>{};
+final Map<int, Completer<taglib.Lyrics>> _lyricsRequests =
+    <int, Completer<taglib.Lyrics>>{};
 
 /// The SendPort belonging to the helper isolate.
 Future<SendPort> _helperIsolateSendPort = () async {
@@ -144,6 +162,13 @@ Future<SendPort> _helperIsolateSendPort = () async {
         completer.complete(data.artwork);
         return;
       }
+      if (data is _LyricsResponse) {
+        // The helper isolate sent us a response to a request we sent.
+        final Completer<taglib.Lyrics> completer = _lyricsRequests[data.id]!;
+        _artworkRequests.remove(data.id);
+        completer.complete(data.lyrics);
+        return;
+      }
       throw UnsupportedError('Unsupported message type: ${data.runtimeType}');
     });
 
@@ -156,6 +181,13 @@ Future<SendPort> _helperIsolateSendPort = () async {
           final taglib.Artwork result =
               _bindings.get_artwork(data.filename.toNativeUtf8().cast<Char>());
           final _ArtworkResponse response = _ArtworkResponse(data.id, result);
+          sendPort.send(response);
+          return;
+        }
+        if (data is _LyricsRequest) {
+          final taglib.Lyrics result =
+              _bindings.get_lyrics(data.filename.toNativeUtf8().cast<Char>());
+          final _LyricsResponse response = _LyricsResponse(data.id, result);
           sendPort.send(response);
           return;
         }
