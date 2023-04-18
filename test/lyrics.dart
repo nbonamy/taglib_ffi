@@ -5,7 +5,7 @@ import 'package:taglib_ffi/src/main.dart';
 
 import 'utils.dart';
 
-void testUpdateLyrics(String filename, String lyrics) {
+void testUpdateLyrics(String filename, String lyrics) async {
   // copy file
   String tempCopy = copyFile(filename);
 
@@ -14,7 +14,7 @@ void testUpdateLyrics(String filename, String lyrics) {
   expect(tagLib.setLyrics(tempCopy, lyrics), true);
 
   // check
-  String updatedLyrics = tagLib.getLyrics(tempCopy);
+  String updatedLyrics = await tagLib.getLyrics(tempCopy);
   expect(lyrics, updatedLyrics);
 
   // done
@@ -24,21 +24,21 @@ void testUpdateLyrics(String filename, String lyrics) {
 void testReadLyrics() {
   test('mp3', () async {
     TagLib tagLib = TagLib(path: '../src', test: true);
-    String lyrics = tagLib.getLyrics('../data/sample.mp3');
+    String lyrics = await tagLib.getLyrics('../data/sample.mp3');
     expect(lyrics,
         'All I ever needed\nIs here in my arms\nWords are very unnecessary\nThey can only do harm');
   });
 
   test('flac', () async {
     TagLib tagLib = TagLib(path: '../src', test: true);
-    String lyrics = tagLib.getLyrics('../data/sample.flac');
+    String lyrics = await tagLib.getLyrics('../data/sample.flac');
     expect(lyrics,
         'All I ever needed\nIs here in my arms\nWords are very unnecessary\nThey can only do harm');
   });
 
   test('m4a', () async {
     TagLib tagLib = TagLib(path: '../src', test: true);
-    String lyrics = tagLib.getLyrics('../data/sample.m4a');
+    String lyrics = await tagLib.getLyrics('../data/sample.m4a');
     expect(lyrics,
         'All I ever needed\nIs here in my arms\nWords are very unnecessary\nThey can only do harm');
   });
