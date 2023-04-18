@@ -12,7 +12,12 @@ Pod::Spec.new do |s|
   s.source_files     = 'Classes/**/*'
   s.dependency 'FlutterMacOS'
 
-  s.dependency 'taglib.framework', '1.13'
+  # s.dependency 'taglib-framework', '1.13'
+  s.xcconfig = {
+    'USER_HEADER_SEARCH_PATHS' => "#{ENV['HOMEBREW_PREFIX']}/include",
+    'LIBRARY_SEARCH_PATHS' => "#{ENV['HOMEBREW_PREFIX']}/lib"
+  }
+  s.library = 'tag'
 
   s.platform = :osx, '11.0'
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES' }
