@@ -37,3 +37,6 @@
 
 * Lyrics
 
+# 0.1.0
+
+* Dependency update
